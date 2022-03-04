@@ -15,4 +15,6 @@ public:
     bool sync_photos(work_type, bool, bool);
 
     bool rename_photos(const std::string &, work_type, bool, bool);
+
+    bool rename_folder(const std::string &, work_type);
 };

@@ -1,5 +1,6 @@
 #include "argument_parse.h"
 
+
 int read_arguments(int argc, char **argv, arguments &arg) {
   struct option long_options[] = {
       {"source", required_argument, nullptr, 's'},
@@ -41,8 +42,13 @@ std::filesystem::path parse_to_path(const std::string &path) {
 }
 
 unsigned int parse_to_unsigned(const std::string & number) {
-  int threads = std::stoi(number);
+  int threads;
+  try {
+    threads = std::stoi(number);
+  } catch (std::invalid_argument &e) {
+    throw std::invalid_argument("Number of threads must be number.");
+  }
   if (threads <= 0)
-    throw std::invalid_argument("Number of threads must be positive number.");
+    throw std::invalid_argument("Number of threads must be positive.");
   return (unsigned int) threads;
 }

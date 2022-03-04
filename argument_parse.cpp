@@ -7,6 +7,8 @@ int read_arguments(int argc, char **argv, arguments &arg) {
       {"destination", required_argument, nullptr, 'd'},
       {"threads", required_argument, nullptr, 't'},
       {"quiet", no_argument, nullptr, 'q'},
+      {"verbose", no_argument, nullptr, 'v'},
+      {"ask", no_argument, nullptr, 'a'},
       {nullptr, 0, nullptr, 0}};
 
   char c;
@@ -24,6 +26,13 @@ int read_arguments(int argc, char **argv, arguments &arg) {
       break;
     case 'q':
       arg.quiet = true;
+      break;
+    case 'v':
+      arg.verbose = true;
+      break;
+    case 'a':
+      arg.ask = true;
+      break;
     default:
       break;
     }

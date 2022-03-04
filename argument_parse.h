@@ -7,6 +7,8 @@ struct arguments {
   std::filesystem::path destination = ".";
   unsigned int threads = 1;
   bool quiet = false;
+  bool verbose = false;
+  bool ask = false;
 };
 
 int read_arguments(int, char **, arguments &);

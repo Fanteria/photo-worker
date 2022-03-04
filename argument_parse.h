@@ -3,8 +3,8 @@
 #include <string>
 
 struct arguments {
-  std::filesystem::path source;
-  std::filesystem::path destination;
+  std::filesystem::path source = ".";
+  std::filesystem::path destination = ".";
   unsigned int threads = 1;
   bool quiet = false;
 };

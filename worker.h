@@ -1,4 +1,5 @@
 #include <filesystem>
+#include <string>
 
 enum work_type {original, converted, both}; 
 
@@ -13,5 +14,5 @@ public:
 
     bool sync_photos(work_type, bool, bool);
 
-    bool rename_photos(work_type, bool, bool);
+    bool rename_photos(const std::string &, work_type, bool, bool);
 };

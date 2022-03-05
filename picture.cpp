@@ -17,33 +17,37 @@ std::pair<unsigned int, unsigned int> Picture::get_raw_image_size() {
 }
 
 std::ostream& operator<< (std::ostream & os, const Picture & pic) {
-    std::cout << "Image size:\t";
-    std::cout << pic.width;
-    std::cout << " x ";
-    std::cout << pic.height;
-    std::cout << "\t\tWithout frame";
-    std::cout << std::endl;
+    os << "Image name:\t";
+    os << pic.name;
+    os << std::endl;
 
-    std::cout << "Output image:\t";
-    std::cout << pic.out_width;
-    std::cout << " x ";
-    std::cout << pic.out_height;
-    std::cout << "\t\tSize of output image, can be different";
-    std::cout << std::endl;
+    os << "Image size:\t";
+    os << pic.width;
+    os << " x ";
+    os << pic.height;
+    os << "\t\tWithout frame";
+    os << std::endl;
 
-    std::cout << "Margin size:\t";
-    std::cout << pic.top_margin;
-    std::cout << " x ";
-    std::cout << pic.left_margin;
-    std::cout << "\t\tCoordinates of left top corner shift";
-    std::cout << std::endl;
+    os << "Output image:\t";
+    os << pic.out_width;
+    os << " x ";
+    os << pic.out_height;
+    os << "\t\tSize of output image, can be different";
+    os << std::endl;
 
-    std::cout << "Raw image size:\t";
-    std::cout << pic.raw_width;
-    std::cout << " x ";
-    std::cout << pic.raw_height;
-    std::cout << "\t\tWith frame";
-    std::cout << std::endl;
+    os << "Margin size:\t";
+    os << pic.top_margin;
+    os << " x ";
+    os << pic.left_margin;
+    os << "\t\tCoordinates of left top corner shift";
+    os << std::endl;
+
+    os << "Raw image size:\t";
+    os << pic.raw_width;
+    os << " x ";
+    os << pic.raw_height;
+    os << "\t\tWith frame";
+    os << std::endl;
 
     return os;
 }

@@ -8,6 +8,8 @@ int Convertor::convert_photo(const std::string & file, LibRaw & iProcessor) {
     }
 
     iProcessor.unpack();
+    iProcessor.dcraw_process();
+    iProcessor.dcraw_ppm_tiff_writer("example.tiff");
 
     this->print_image_info(iProcessor);
 

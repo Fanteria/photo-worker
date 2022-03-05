@@ -1,6 +1,7 @@
 #include <filesystem>
 #include <iostream>
 #include <libraw/libraw.h>
+#include <turbojpeg.h>
 
 class Convertor {
 private:

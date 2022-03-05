@@ -3,6 +3,8 @@
 #include <libraw/libraw.h>
 #include <turbojpeg.h>
 
+#include "picture.h"
+
 class Convertor {
 private:
     std::filesystem::path src;
@@ -14,5 +16,4 @@ public:
 
     int convert_photo(const std::string &, LibRaw &);
 
-    static void print_image_info(const LibRaw &);
 };

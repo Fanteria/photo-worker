@@ -1,3 +1,4 @@
 main
-example.CR2
+*.CR2
+*.tiff
 .vscode

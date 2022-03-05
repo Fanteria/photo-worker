@@ -5,9 +5,6 @@
 #include "argument_parse.h"
 #include "convertor.h"
 
-int process_image(const std::string &file, LibRaw &iProcessor);
-void print_image_info(const LibRaw &iProcessor);
-
 int main(int argc, char **args) {
   arguments arg = arguments();
   try {

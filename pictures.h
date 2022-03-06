@@ -14,6 +14,8 @@ public:
     Pictures() : pics() {}
 
     void addPicture(const std::string & name, const PictureData &);
+
+    std::string listAll();
 };
 
 #endif // PICTURES_H_INCLUDED

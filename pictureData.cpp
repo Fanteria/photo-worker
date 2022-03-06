@@ -1,26 +1,22 @@
 #include "picture.h"
 
-std::pair<unsigned int, unsigned int> Picture::get_image_size() {
+std::pair<unsigned int, unsigned int> PictureData::get_image_size() {
     return std::make_pair(this->width, this->height);
 }
 
-std::pair<unsigned int, unsigned int> Picture::get_output_image_size() {
+std::pair<unsigned int, unsigned int> PictureData::get_output_image_size() {
     return std::make_pair(this->out_width, this->out_height);
 }
 
-std::pair<unsigned int, unsigned int> Picture::get_margin_size() {
+std::pair<unsigned int, unsigned int> PictureData::get_margin_size() {
     return std::make_pair(this->top_margin, this->left_margin);
 }
 
-std::pair<unsigned int, unsigned int> Picture::get_raw_image_size() {
+std::pair<unsigned int, unsigned int> PictureData::get_raw_image_size() {
     return std::make_pair(this->raw_width, this->raw_height);
 }
 
-std::ostream& operator<< (std::ostream & os, const Picture & pic) {
-    os << "Image name:\t";
-    os << pic.name;
-    os << std::endl;
-
+std::ostream& operator<< (std::ostream & os, const PictureData & pic) {
     os << "Image size:\t";
     os << pic.width;
     os << " x ";
@@ -50,8 +46,4 @@ std::ostream& operator<< (std::ostream & os, const Picture & pic) {
     os << std::endl;
 
     return os;
-}
-
-bool operator< (const Picture & l, const Picture & r) {
-    return l.name.compare(r.name);
 }

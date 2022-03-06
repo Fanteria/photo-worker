@@ -2,7 +2,7 @@
 #include <string>
 #include <iostream>
 
-class Picture {
+class PictureData {
 private:
     // Image size without frame
     const unsigned int width;
@@ -21,10 +21,7 @@ private:
     const unsigned int raw_height;
 
 public:
-    std::string name;
-
-    Picture(const std::string & name,
-            const unsigned int width,
+    PictureData(const unsigned int width,
             const unsigned int height,
             const unsigned int out_width,
             const unsigned int out_height,
@@ -35,8 +32,7 @@ public:
             width(width), height(height),
             out_width(out_width), out_height(out_height),
             top_margin(top_margin), left_margin(left_margin),
-            raw_width(raw_width), raw_height(raw_height),
-            name(name) {}
+            raw_width(raw_width), raw_height(raw_height) {}
 
     std::pair<unsigned int, unsigned int> get_image_size();
 
@@ -46,7 +42,5 @@ public:
 
     std::pair<unsigned int, unsigned int> get_raw_image_size();
 
-    friend std::ostream& operator<< (std::ostream &, const Picture &);
-
-    friend bool operator< (const Picture &, const Picture &);
+    friend std::ostream& operator<< (std::ostream &, const PictureData &);
 };

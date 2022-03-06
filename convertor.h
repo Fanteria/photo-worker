@@ -16,4 +16,5 @@ public:
 
     int convert_photo(const std::string &, LibRaw &);
 
+    int conver_photos_list(const std::vector<std::string> &, unsigned int);
 };

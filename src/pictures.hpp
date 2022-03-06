@@ -4,7 +4,7 @@
 #include <map>
 #include <string>
 
-#include "pictureData.h"
+#include "pictureData.hpp"
 
 class Pictures {
 private:

@@ -6,8 +6,8 @@
 #include <libraw/libraw.h>
 #include <turbojpeg.h>
 
-#include "pictures.h"
-#include "pictureData.h"
+#include "pictures.hpp"
+#include "pictureData.hpp"
 
 class Convertor {
 private:

@@ -1,4 +1,4 @@
-#include "pictures.h"
+#include "pictures.hpp"
 
 void Pictures::addPicture(const std::string & name, PictureData * pic) {
     pics.insert(make_pair(name, pic));

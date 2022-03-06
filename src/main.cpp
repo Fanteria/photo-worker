@@ -3,10 +3,10 @@
 #include <string>
 #include <vector>
 
-#include "argument_parse.h"
-#include "convertor.h"
-#include "worker.h"
-#include "pictures.h"
+#include "argument_parse.hpp"
+#include "convertor.hpp"
+#include "worker.hpp"
+#include "pictures.hpp"
 
 int main(int argc, char **args) {
   arguments arg = arguments();

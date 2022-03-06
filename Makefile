@@ -32,9 +32,9 @@ $(BIN)/%.o: $(SRC)/%.cpp
 	@mkdir -p $(BIN)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-$(BIN)/main.o: $(SRC)/main.cpp $(SRC)/argument_parse.h $(SRC)/convertor.h $(SRC)/worker.h $(SRC)/pictures.h
-$(BIN)/argument_parse.o: $(SRC)/argument_parse.cpp $(SRC)/argument_parse.h
-$(BIN)/convertor.o: $(SRC)/convertor.cpp $(SRC)/convertor.h $(SRC)/pictures.h $(SRC)/pictureData.h
-$(BIN)/pictures.o: $(SRC)/pictures.cpp $(SRC)/pictures.h $(SRC)/pictureData.h
-$BIN)/pictureData.o: $(SRC)/pictureData.cpp $(SRC)/pictureData.h
-$(BIN)/worker.o: $(SRC)/worker.cpp $(SRC)/worker.h 
+$(BIN)/main.o: $(SRC)/main.cpp $(SRC)/argument_parse.hpp $(SRC)/convertor.hpp $(SRC)/worker.hpp $(SRC)/pictures.hpp
+$(BIN)/argument_parse.o: $(SRC)/argument_parse.cpp $(SRC)/argument_parse.hpp
+$(BIN)/convertor.o: $(SRC)/convertor.cpp $(SRC)/convertor.hpp $(SRC)/pictures.hpp $(SRC)/pictureData.hpp
+$(BIN)/pictures.o: $(SRC)/pictures.cpp $(SRC)/pictures.hpp $(SRC)/pictureData.hpp
+$BIN)/pictureData.o: $(SRC)/pictureData.cpp $(SRC)/pictureData.hpp
+$(BIN)/worker.o: $(SRC)/worker.cpp $(SRC)/worker.hpp

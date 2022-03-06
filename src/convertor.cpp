@@ -1,4 +1,4 @@
-#include "convertor.h"
+#include "convertor.hpp"
 
 int Convertor::load_picture(const std::string & file_name, LibRaw & iProcessor) {
     int ret;

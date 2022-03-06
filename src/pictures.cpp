@@ -7,7 +7,7 @@ void Pictures::addPicture(const std::string & name, PictureData * pic) {
 std::string Pictures::listAll() {
     std::string ret;
     for(auto const & i : pics) {
-        ret += i.first;
+        ret += i.first + "\n";
     }
     return ret;
 }

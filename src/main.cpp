@@ -6,6 +6,7 @@
 #include "argument_parse.h"
 #include "convertor.h"
 #include "worker.h"
+#include "pictures.h"
 
 int main(int argc, char **args) {
   arguments arg = arguments();
@@ -25,10 +26,11 @@ int main(int argc, char **args) {
 
   std::cout << std::endl;
 
-  LibRaw iProcessor;
   Convertor convertor = Convertor(arg.source, arg.destination);
-  convertor.conver_photos_list(*aux, arg.threads);
+  std::shared_ptr<Pictures> pictures = convertor.conver_photos_list(*aux, arg.threads);
 
+  std::cout << "List pictures: " << std::endl;
+  std::cout << pictures->listAll() << std::endl;
   delete aux;
 
   return EXIT_SUCCESS;

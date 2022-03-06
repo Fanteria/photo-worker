@@ -4,6 +4,7 @@ CXXLINKFLAGS = -lraw
 
 SRC = src
 BIN = bin
+TEST = test
 TARGET = photo-worker
  
 .PHONY: build
@@ -11,11 +12,11 @@ build: $(BIN)/$(TARGET)
 
 .PHONY: run
 run: $(BIN)/$(TARGET)
-	$(BIN)/$(TARGET)
+	$(BIN)/$(TARGET) -s $(TEST) -d $(TEST)
 
 .PHONY: debug
 debug: $(BIN)/$(TARGET)
-	valgrind $(BIN)/$(TARGET)
+	valgrind $(BIN)/$(TARGET) -s $(TEST) -d $(TEST)
 
 .PHONY: clean
 clean:

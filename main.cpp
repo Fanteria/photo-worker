@@ -27,8 +27,9 @@ int main(int argc, char **args) {
 
   LibRaw iProcessor;
   Convertor convertor = Convertor(arg.source, arg.destination);
- 
-  convertor.convert_photo("example.CR2", iProcessor);
+  convertor.conver_photos_list(*aux, arg.threads);
+
+  delete aux;
 
   return EXIT_SUCCESS;
 }

@@ -1,4 +1,4 @@
-#include "picture.h"
+#include "pictureData.h"
 
 std::pair<unsigned int, unsigned int> PictureData::get_image_size() {
     return std::make_pair(this->width, this->height);

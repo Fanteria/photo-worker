@@ -1,9 +1,13 @@
+#ifndef CONVERTOR_H_INCLUDED
+#define CONVERTOR_H_INCLUDED
+
 #include <filesystem>
 #include <iostream>
 #include <libraw/libraw.h>
 #include <turbojpeg.h>
 
-#include "picture.h"
+#include "pictures.h"
+#include "pictureData.h"
 
 class Convertor {
 private:
@@ -16,5 +20,7 @@ public:
 
     int convert_photo(const std::string &, LibRaw &);
 
-    int conver_photos_list(const std::vector<std::string> &, unsigned int);
+    std::shared_ptr<Pictures> conver_photos_list(const std::vector<std::string> &, unsigned int);
 };
+
+#endif //CONVERTOR_H_INCLUDED

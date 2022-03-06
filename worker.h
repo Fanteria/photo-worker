@@ -1,3 +1,6 @@
+#ifndef WORKER_H_INCLUDED
+#define WORKER_H_INCLUDED
+
 #include <filesystem>
 #include <string>
 #include <vector>
@@ -23,3 +26,5 @@ public:
 
     void read_raw_files(std::vector<std::string> &);
 };
+
+#endif // WORKER_H_INCLUDED

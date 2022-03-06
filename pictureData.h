@@ -1,3 +1,6 @@
+#ifndef PICTURE_DATA_H_INCLUDED
+#define PICTURE_DATA_H_INCLUDED
+
 #include <filesystem>
 #include <string>
 #include <iostream>
@@ -44,3 +47,5 @@ public:
 
     friend std::ostream& operator<< (std::ostream &, const PictureData &);
 };
+
+#endif // PICTURE_DATA_H_INCLUDED

@@ -1,7 +1,10 @@
+#ifndef PICTURES_H_INCLUDED
+#define PICTURES_H_INCLUDED
+
 #include <map>
 #include <string>
 
-#include "picture.h"
+#include "pictureData.h"
 
 class Pictures {
 private:
@@ -12,3 +15,5 @@ public:
 
     void addPicture(const std::string & name, const PictureData &);
 };
+
+#endif // PICTURES_H_INCLUDED

@@ -26,8 +26,9 @@ int Convertor::convert_photo(const std::string & file_name, LibRaw & iProcessor)
     return 0;
 }
 
-int Convertor::conver_photos_list(const std::vector<std::string> & pics, unsigned int threads = 1) {
+std::shared_ptr<Pictures> Convertor::conver_photos_list(const std::vector<std::string> & pics, unsigned int threads = 1) {
     LibRaw iProcessor;
+    auto pictures = std::make_shared<Pictures>();
 
     for (auto pic : pics) {
         convert_photo(pic, iProcessor);

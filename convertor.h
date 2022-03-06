@@ -14,11 +14,17 @@ private:
     std::filesystem::path src;
     std::filesystem::path dest;
 
+        int load_picture(const std::string &, LibRaw &);
+
+        PictureData * read_picture_data(LibRaw &);
+
+        void convert_picture(const std::string &, LibRaw &);
+
+        void process_picture(const std::string &, LibRaw &, std::shared_ptr<Pictures>, bool);
+
 public:
     Convertor(const std::filesystem::path &src, const std::filesystem::path &dest) : 
         src(src), dest(dest) {}
-
-    int convert_photo(const std::string &, LibRaw &);
 
     std::shared_ptr<Pictures> conver_photos_list(const std::vector<std::string> &, unsigned int);
 };

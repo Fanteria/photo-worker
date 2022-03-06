@@ -51,3 +51,7 @@ std::ostream& operator<< (std::ostream & os, const Picture & pic) {
 
     return os;
 }
+
+bool operator< (const Picture & l, const Picture & r) {
+    return l.name.compare(r.name);
+}

@@ -47,4 +47,6 @@ public:
     std::pair<unsigned int, unsigned int> get_raw_image_size();
 
     friend std::ostream& operator<< (std::ostream &, const Picture &);
+
+    friend bool operator< (const Picture &, const Picture &);
 };

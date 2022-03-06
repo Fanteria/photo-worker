@@ -8,12 +8,12 @@
 
 class Pictures {
 private:
-    std::map<std::string , PictureData> pics;
+    std::map<std::string , PictureData *> pics;
 
 public:
     Pictures() : pics() {}
 
-    void addPicture(const std::string & name, const PictureData &);
+    void addPicture(const std::string & name, PictureData *);
 
     std::string listAll();
 };

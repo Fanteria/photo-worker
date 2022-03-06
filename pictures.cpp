@@ -1,6 +1,6 @@
 #include "pictures.h"
 
-void Pictures::addPicture(const std::string & name, const PictureData & pic) {
+void Pictures::addPicture(const std::string & name, PictureData * pic) {
     pics.insert(make_pair(name, pic));
 }
 

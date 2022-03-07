@@ -21,6 +21,7 @@ debug: $(BIN)/$(TARGET)
 .PHONY: clean
 clean:
 	rm -rf $(BIN)
+	rm -rf $(TEST)/jpg
 
 # $^ all rules for dependency (after :)
 # $< first parametr of dependency (before :)

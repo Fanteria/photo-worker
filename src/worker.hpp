@@ -12,6 +12,7 @@ private:
     const std::filesystem::path src;
     const std::filesystem::path dest;
 
+    static std::filesystem::path new_path(const std::filesystem::path &, const std::string &);
 public:
     std::string raw_suffix = ".CR2";
     std::string converted_suffix = ".jpg";
@@ -23,11 +24,11 @@ public:
 
     bool rename_photos(const std::string &, work_type, bool, bool);
 
-    bool rename_folder(const std::string &, work_type);
+    void rename_folder(const std::string &, work_type type = original);
 
     void read_raw_files(std::vector<std::string> &);
     
-    void read_converted_files(std::vector<std::string> & files);
+    void read_converted_files(std::vector<std::string> &);
 
     static void read_files(std::vector<std::string> &, const std::string &, const std::filesystem::path &);
 };

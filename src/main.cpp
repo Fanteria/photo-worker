@@ -30,5 +30,13 @@ int main(int argc, char **args) {
 
   delete aux;
 
+  /*
+  try {
+    worker.rename_folder("hello", converted);
+  } catch (const std::filesystem::filesystem_error & e) {
+    std::cout << e.what() << std::endl;
+  }
+  */
+
   return EXIT_SUCCESS;
 }

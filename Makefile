@@ -16,7 +16,7 @@ run: $(BIN)/$(TARGET)
 
 .PHONY: debug
 debug: $(BIN)/$(TARGET)
-	valgrind $(BIN)/$(TARGET) -s $(TEST)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose $(BIN)/$(TARGET) -s $(TEST)
 
 .PHONY: clean
 clean:

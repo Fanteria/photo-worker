@@ -13,13 +13,17 @@ int read_arguments(int argc, char **argv, arguments &arg) {
 
   char c;
   std::string path;
+  bool dest_setted = false;
   while ((c = getopt_long(argc, argv, "s:d:t:q", long_options, NULL)) != -1) {
     switch (c) {
     case 's':
       arg.source = parse_to_path(optarg);
+      if (!dest_setted)
+        arg.destination = parse_to_path(arg.source / "jpg", false);
       break;
     case 'd':
-      arg.destination = parse_to_path(optarg);
+      arg.destination = parse_to_path(optarg, false);
+      dest_setted = true;
       break;
     case 't':
       arg.threads = parse_to_unsigned(optarg);
@@ -41,12 +45,21 @@ int read_arguments(int argc, char **argv, arguments &arg) {
   return 0;
 }
 
-std::filesystem::path parse_to_path(const std::string &path) {
+std::filesystem::path parse_to_path(const std::string &path, bool must_exist) {
   std::filesystem::path p(path);
-  if (!std::filesystem::exists(p))
+  if (!std::filesystem::exists(p)) {
+    if (std::filesystem::exists(p.parent_path())) {
+      if(std::filesystem::create_directory(p)) {
+        return p;
+      } else {
+        throw std::invalid_argument(path + " cannot create directory.");
+      }
+    }
     throw std::invalid_argument(path + " does not exist.");
-  if (!std::filesystem::is_directory(p))
+  }
+  if (!std::filesystem::is_directory(p)) {
     throw std::invalid_argument(path + "is not directory.");
+  }
   return p;
 }
 

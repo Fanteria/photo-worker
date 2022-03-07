@@ -42,5 +42,6 @@ std::shared_ptr<Pictures> Convertor::conver_photos_list(const std::vector<std::s
         process_picture(pic, iProcessor, pictures);
     }
 
+    iProcessor.recycle();
     return pictures;
 }

@@ -12,11 +12,11 @@ build: $(BIN)/$(TARGET)
 
 .PHONY: run
 run: $(BIN)/$(TARGET)
-	$(BIN)/$(TARGET) -s $(TEST) -d $(TEST)
+	$(BIN)/$(TARGET) -s $(TEST)
 
 .PHONY: debug
 debug: $(BIN)/$(TARGET)
-	valgrind $(BIN)/$(TARGET) -s $(TEST) -d $(TEST)
+	valgrind $(BIN)/$(TARGET) -s $(TEST)
 
 .PHONY: clean
 clean:

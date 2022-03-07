@@ -21,6 +21,7 @@ PictureData * Convertor::read_picture_data(LibRaw & iProcessor) {
 }
 
 void Convertor::convert_picture(const std::string & file_name, LibRaw & iProcessor) {
+    std::cout << file_name << std::endl;
     iProcessor.unpack();
     iProcessor.dcraw_process();
     iProcessor.dcraw_ppm_tiff_writer(file_name.c_str());
@@ -31,7 +32,7 @@ void Convertor::process_picture(const std::string & file_name, LibRaw & iProcess
     load_picture(src / file_name, iProcessor);
     pictures->addPicture(name, read_picture_data(iProcessor));
     if(convert)
-        convert_picture(src / (name + ".tiff"), iProcessor);
+        convert_picture(dest / (name + ".tiff"), iProcessor);
 }
 
 std::shared_ptr<Pictures> Convertor::conver_photos_list(const std::vector<std::string> & pics, unsigned int threads = 1) {

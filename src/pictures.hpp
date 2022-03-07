@@ -12,6 +12,7 @@ private:
 
 public:
     Pictures() : pics() {}
+    ~Pictures();
 
     void addPicture(const std::string & name, PictureData *);
 

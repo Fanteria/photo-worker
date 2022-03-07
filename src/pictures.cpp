@@ -1,5 +1,11 @@
 #include "pictures.hpp"
 
+Pictures::~Pictures() {
+    for(auto & pic : pics) {
+        delete pic.second;
+    }
+}
+
 void Pictures::addPicture(const std::string & name, PictureData * pic) {
     pics.insert(make_pair(name, pic));
 }

@@ -13,7 +13,8 @@ private:
     const std::filesystem::path dest;
 
 public:
-    std::string suffix = ".CR2";
+    std::string raw_suffix = ".CR2";
+    std::string converted_suffix = ".jpg";
 
     Worker(const std::filesystem::path &src, const std::filesystem::path &dest) : 
         src(src), dest(dest) {}
@@ -25,6 +26,10 @@ public:
     bool rename_folder(const std::string &, work_type);
 
     void read_raw_files(std::vector<std::string> &);
+    
+    void read_converted_files(std::vector<std::string> & files);
+
+    static void read_files(std::vector<std::string> &, const std::string &, const std::filesystem::path &);
 };
 
 #endif // WORKER_H_INCLUDED

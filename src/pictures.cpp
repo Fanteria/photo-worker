@@ -1,7 +1,7 @@
 #include "pictures.hpp"
 
 Pictures::~Pictures() {
-    std::for_each(std::execution:par, pics.begin(), pics.end(), [](auto & pic) {
+    std::for_each( pics.begin(), pics.end(), [](auto & pic) {
         delete pic.second;
     });
 }

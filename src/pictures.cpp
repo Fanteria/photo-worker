@@ -1,9 +1,9 @@
 #include "pictures.hpp"
 
 Pictures::~Pictures() {
-    for(auto & pic : pics) {
+    std::for_each(std::execution:par, pics.begin(), pics.end(), [](auto & pic) {
         delete pic.second;
-    }
+    });
 }
 
 void Pictures::addPicture(const std::string & name, PictureData * pic) {

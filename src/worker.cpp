@@ -35,7 +35,19 @@ void Worker::remove_surplus_files(const fs::path &original,
   }
 }
 
-void Worker::sync_photos(work_type type) { remove_surplus_files(src, dest); }
+void Worker::sync_photos(work_type type) {
+  switch (type) {
+  case original:
+    remove_surplus_files(src, dest);
+    break;
+  case both:
+    remove_surplus_files(src, dest);
+  case converted:
+    remove_surplus_files(dest, src);
+    break;
+  }
+  remove_surplus_files(src, dest);
+}
 
 void Worker::rename_photos(const std::string &name, work_type type) {
   switch (type) {

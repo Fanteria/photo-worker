@@ -52,7 +52,7 @@ int main(int argc, char **args) {
       std::cout << "Name missing for rename" << std::endl;
       return EXIT_FAILURE;
     }
-    worker.rename_photos(arg.name, original);
+    worker.rename_photos(arg.name, both);
     break;
   case convert_files:
     // Read list of files for convertion
@@ -69,6 +69,10 @@ int main(int argc, char **args) {
         convertor.conver_photos_list(*aux, arg.threads);
 
     delete aux;
+
+    if (!arg.name.empty()) {
+      worker.rename_photos(arg.name, both);
+    }
     break;
   }
 

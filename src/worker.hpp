@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <string>
 #include <vector>
+#include <set>
 
 enum work_type {original, converted, both}; 
 
@@ -20,9 +21,9 @@ public:
     Worker(const std::filesystem::path &src, const std::filesystem::path &dest) : 
         src(src), dest(dest) {}
 
-    bool sync_photos(work_type, bool, bool);
+    void sync_photos(work_type, bool, bool);
 
-    bool rename_photos(const std::string &, work_type, bool, bool);
+    void rename_photos(const std::string &, work_type, bool, bool);
 
     void rename_folder(const std::string &, work_type type = original);
 
@@ -31,6 +32,8 @@ public:
     void read_converted_files(std::vector<std::string> &);
 
     static void read_files(std::vector<std::string> &, const std::string &, const std::filesystem::path &);
+
+    static void rename_files_in_folder(const std::filesystem::path &, const std::string &, const std::string &, bool, bool, bool);
 };
 
 #endif // WORKER_H_INCLUDED

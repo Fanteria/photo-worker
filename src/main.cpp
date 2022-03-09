@@ -5,8 +5,8 @@
 
 #include "argument_parse.hpp"
 #include "convertor.hpp"
-#include "worker.hpp"
 #include "pictures.hpp"
+#include "worker.hpp"
 
 int main(int argc, char **args) {
   arguments arg = arguments();
@@ -23,13 +23,16 @@ int main(int argc, char **args) {
   worker.read_raw_files(*aux);
 
   Convertor convertor = Convertor(arg.source, arg.destination);
-  std::shared_ptr<Pictures> pictures = convertor.conver_photos_list(*aux, arg.threads);
+  std::shared_ptr<Pictures> pictures =
+      convertor.conver_photos_list(*aux, arg.threads);
 
   std::cout << "List pictures: " << std::endl;
   std::cout << pictures->listAll() << std::endl;
 
   delete aux;
 
+  // Worker::rename_files_in_folder(arg.source, "new_name", ".CR2", true, false,
+  // false);
   /*
   try {
     worker.rename_folder("hello", converted);

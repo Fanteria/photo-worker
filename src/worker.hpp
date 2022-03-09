@@ -6,9 +6,9 @@
 #include <string>
 #include <vector>
 
-enum work_type { original, converted, both };
-
 namespace fs = std::filesystem;
+
+enum work_type { original, converted, both };
 
 class Worker {
 private:
@@ -16,6 +16,8 @@ private:
   const fs::path dest;
 
   static fs::path new_path(const fs::path &, const std::string &);
+  static std::set<fs::path> get_sorted_files(const fs::path &,
+                                             const std::string &);
 
 public:
   std::string raw_suffix = ".CR2";

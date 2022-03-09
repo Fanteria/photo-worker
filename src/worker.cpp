@@ -1,10 +1,22 @@
 #include "worker.hpp"
 
+#include <filesystem>
 #include <iostream>
 
 inline fs::path Worker::new_path(const fs::path &path,
                                  const std::string &name) {
   return path.parent_path() / name;
+}
+
+inline std::set<fs::path> Worker::get_sorted_files(const fs::path &path,
+                                                   const std::string &suffix) {
+  std::set<fs::path> sorted_files;
+  for (const auto &file : fs::directory_iterator(path)) {
+    if (file.path().extension() == suffix) {
+      sorted_files.insert(file.path());
+    }
+  }
+  return sorted_files;
 }
 
 void Worker::sync_photos(work_type type) {}
@@ -56,12 +68,7 @@ void Worker::rename_files_in_folder(const fs::path &path,
                                     const std::string &name,
                                     const std::string &suffix, bool renumber,
                                     bool verbose, bool ask) {
-  std::set<fs::path> sorted_files;
-  for (const auto &file : fs::directory_iterator(path)) {
-    if (file.path().extension() == suffix) {
-      sorted_files.insert(file.path());
-    }
-  }
+  std::set<fs::path> sorted_files = Worker::get_sorted_files(path, suffix);
   if (renumber) {
     int number = 1;
     for (auto const &file : sorted_files) {

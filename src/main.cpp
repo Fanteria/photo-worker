@@ -61,6 +61,8 @@ int main(int argc, char **args) {
 
     // Initialize convertor
     Convertor convertor = Convertor(arg.source, arg.destination);
+    convertor.verbose = arg.verbose;
+    convertor.quiet = arg.quiet;
 
     // Convert pictures and take list of them with info
     std::shared_ptr<Pictures> pictures =

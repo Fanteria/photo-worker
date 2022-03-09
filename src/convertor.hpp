@@ -13,8 +13,8 @@ namespace fs = std::filesystem;
 
 class Convertor {
 private:
-  fs::path src;
-  fs::path dest;
+  const fs::path src;
+  const fs::path dest;
 
   int load_picture(const std::string &, LibRaw &);
 
@@ -26,6 +26,9 @@ private:
                        bool);
 
 public:
+  bool verbose = false;
+  bool quiet = false;
+
   Convertor(const fs::path &src, const fs::path &dest) : src(src), dest(dest) {}
 
   std::shared_ptr<Pictures> conver_photos_list(const std::vector<std::string> &,

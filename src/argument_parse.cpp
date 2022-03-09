@@ -1,4 +1,6 @@
 #include "argument_parse.hpp"
+#include <bits/getopt_core.h>
+#include <bits/getopt_ext.h>
 
 int read_arguments(int argc, char **argv, arguments &arg) {
   struct option long_options[] = {
@@ -8,6 +10,7 @@ int read_arguments(int argc, char **argv, arguments &arg) {
       {"quiet", no_argument, nullptr, 'q'},
       {"verbose", no_argument, nullptr, 'v'},
       {"ask", no_argument, nullptr, 'a'},
+      {"name", required_argument, nullptr, 'n'},
       {nullptr, 0, nullptr, 0}};
 
   char c;
@@ -35,6 +38,9 @@ int read_arguments(int argc, char **argv, arguments &arg) {
       break;
     case 'a':
       arg.ask = true;
+      break;
+    case 'n':
+      arg.name = optarg;
       break;
     default:
       break;

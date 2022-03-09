@@ -12,6 +12,7 @@ struct arguments {
   bool quiet = false;
   bool verbose = false;
   bool ask = false;
+  std::string name = "";
 };
 
 int read_arguments(int, char **, arguments &);

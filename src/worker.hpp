@@ -8,13 +8,14 @@
 
 enum work_type { original, converted, both };
 
+namespace fs = std::filesystem;
+
 class Worker {
 private:
-  const std::filesystem::path src;
-  const std::filesystem::path dest;
+  const fs::path src;
+  const fs::path dest;
 
-  static std::filesystem::path new_path(const std::filesystem::path &,
-                                        const std::string &);
+  static fs::path new_path(const fs::path &, const std::string &);
 
 public:
   std::string raw_suffix = ".CR2";
@@ -22,8 +23,7 @@ public:
   bool vebose = false;
   bool ask = false;
 
-  Worker(const std::filesystem::path &src, const std::filesystem::path &dest)
-      : src(src), dest(dest) {}
+  Worker(const fs::path &src, const fs::path &dest) : src(src), dest(dest) {}
 
   void sync_photos(work_type);
 
@@ -36,11 +36,10 @@ public:
   void read_converted_files(std::vector<std::string> &);
 
   static void read_files(std::vector<std::string> &, const std::string &,
-                         const std::filesystem::path &);
+                         const fs::path &);
 
-  static void rename_files_in_folder(const std::filesystem::path &,
-                                     const std::string &, const std::string &,
-                                     bool, bool, bool);
+  static void rename_files_in_folder(const fs::path &, const std::string &,
+                                     const std::string &, bool, bool, bool);
 };
 
 #endif // WORKER_H_INCLUDED

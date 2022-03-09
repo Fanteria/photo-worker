@@ -7,11 +7,9 @@ inline std::filesystem::path Worker::new_path(const std::filesystem::path &path,
   return path.parent_path() / name;
 }
 
-void Worker::sync_photos(work_type type, bool verbose = false,
-                         bool ask = false) {}
+void Worker::sync_photos(work_type type) {}
 
-void Worker::rename_photos(const std::string &name, work_type type,
-                           bool verbose = false, bool ask = false) {}
+void Worker::rename_photos(const std::string &name, work_type type) {}
 
 void Worker::rename_folder(const std::string &name, work_type type) {
   switch (type) {

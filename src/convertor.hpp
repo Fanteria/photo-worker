@@ -6,27 +6,30 @@
 #include <libraw/libraw.h>
 #include <turbojpeg.h>
 
-#include "pictures.hpp"
 #include "pictureData.hpp"
+#include "pictures.hpp"
+
+namespace fs = std::filesystem;
 
 class Convertor {
 private:
-    std::filesystem::path src;
-    std::filesystem::path dest;
+  fs::path src;
+  fs::path dest;
 
-        int load_picture(const std::string &, LibRaw &);
+  int load_picture(const std::string &, LibRaw &);
 
-        PictureData * read_picture_data(LibRaw &);
+  PictureData *read_picture_data(LibRaw &);
 
-        void convert_picture(const std::string &, LibRaw &);
+  void convert_picture(const std::string &, LibRaw &);
 
-        void process_picture(const std::string &, LibRaw &, std::shared_ptr<Pictures>, bool);
+  void process_picture(const std::string &, LibRaw &, std::shared_ptr<Pictures>,
+                       bool);
 
 public:
-    Convertor(const std::filesystem::path &src, const std::filesystem::path &dest) : 
-        src(src), dest(dest) {}
+  Convertor(const fs::path &src, const fs::path &dest) : src(src), dest(dest) {}
 
-    std::shared_ptr<Pictures> conver_photos_list(const std::vector<std::string> &, unsigned int);
+  std::shared_ptr<Pictures> conver_photos_list(const std::vector<std::string> &,
+                                               unsigned int);
 };
 
-#endif //CONVERTOR_H_INCLUDED
+#endif // CONVERTOR_H_INCLUDED

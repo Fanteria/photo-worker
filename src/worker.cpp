@@ -9,7 +9,19 @@ inline fs::path Worker::new_path(const fs::path &path,
 
 void Worker::sync_photos(work_type type) {}
 
-void Worker::rename_photos(const std::string &name, work_type type) {}
+void Worker::rename_photos(const std::string &name, work_type type) {
+  switch (type) {
+  case original:
+    Worker::rename_files_in_folder(src, name, raw_suffix, false, verbose, ask);
+    break;
+  case both:
+    Worker::rename_files_in_folder(src, name, raw_suffix, false, verbose, ask);
+  case converted:
+    Worker::rename_files_in_folder(dest, name, converted_suffix, false, verbose,
+                                   ask);
+    break;
+  }
+}
 
 void Worker::rename_folder(const std::string &name, work_type type) {
   switch (type) {

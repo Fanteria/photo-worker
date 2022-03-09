@@ -20,7 +20,7 @@ private:
 public:
   std::string raw_suffix = ".CR2";
   std::string converted_suffix = ".jpg";
-  bool vebose = false;
+  bool verbose = false;
   bool ask = false;
 
   Worker(const fs::path &src, const fs::path &dest) : src(src), dest(dest) {}

@@ -1,6 +1,5 @@
 #include "argument_parse.hpp"
 
-
 int read_arguments(int argc, char **argv, arguments &arg) {
   struct option long_options[] = {
       {"source", required_argument, nullptr, 's'},
@@ -45,11 +44,11 @@ int read_arguments(int argc, char **argv, arguments &arg) {
   return 0;
 }
 
-std::filesystem::path parse_to_path(const std::string &path, bool must_exist) {
-  std::filesystem::path p(path);
-  if (!std::filesystem::exists(p)) {
-    if (std::filesystem::exists(p.parent_path())) {
-      if(std::filesystem::create_directory(p)) {
+fs::path parse_to_path(const std::string &path, bool must_exist) {
+  fs::path p(path);
+  if (!fs::exists(p)) {
+    if (fs::exists(p.parent_path())) {
+      if (fs::create_directory(p)) {
         return p;
       } else {
         throw std::invalid_argument(path + " cannot create directory.");
@@ -57,13 +56,13 @@ std::filesystem::path parse_to_path(const std::string &path, bool must_exist) {
     }
     throw std::invalid_argument(path + " does not exist.");
   }
-  if (!std::filesystem::is_directory(p)) {
+  if (!fs::is_directory(p)) {
     throw std::invalid_argument(path + "is not directory.");
   }
   return p;
 }
 
-unsigned int parse_to_unsigned(const std::string & number) {
+unsigned int parse_to_unsigned(const std::string &number) {
   int threads;
   try {
     threads = std::stoi(number);
@@ -72,5 +71,5 @@ unsigned int parse_to_unsigned(const std::string & number) {
   }
   if (threads <= 0)
     throw std::invalid_argument("Number of threads must be positive.");
-  return (unsigned int) threads;
+  return (unsigned int)threads;
 }

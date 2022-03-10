@@ -22,14 +22,17 @@ inline std::set<fs::path> Worker::get_sorted_files(const fs::path &path,
 void Worker::remove_surplus_files(const fs::path &original,
                                   const fs::path &synced) {
   std::map<std::string, fs::path> files_set;
+  // Load all files (without folders) from synced folder
   for (const auto &file : fs::directory_iterator(synced)) {
     if (file.is_regular_file())
       files_set.insert(
           std::pair<std::string, fs::path>(get_filename(file), file));
   }
+  // Remove from loaded files all thats exist in original folder
   for (const auto &file : fs::directory_iterator(original)) {
     files_set.erase(get_filename(file));
   }
+  // Delete files not removed in previous step
   for (const auto &file : files_set) {
     fs::remove(file.second);
   }
@@ -52,13 +55,12 @@ void Worker::sync_photos(work_type type) {
 void Worker::rename_photos(const std::string &name, work_type type) {
   switch (type) {
   case original:
-    Worker::rename_files_in_folder(src, name, raw_suffix, false, verbose, ask);
+    rename_files_in_folder(src, name, raw_suffix, false, verbose, ask);
     break;
   case both:
-    Worker::rename_files_in_folder(src, name, raw_suffix, false, verbose, ask);
+    rename_files_in_folder(src, name, raw_suffix, false, verbose, ask);
   case converted:
-    Worker::rename_files_in_folder(dest, name, converted_suffix, false, verbose,
-                                   ask);
+    rename_files_in_folder(dest, name, converted_suffix, false, verbose, ask);
     break;
   }
 }

@@ -36,4 +36,11 @@ int read_arguments(int argc, char **argv, arguments &arg);
  */
 fs::path parse_to_path(const std::string &path, bool must_exist = true);
 
+/**
+ * @brief Parse string to unsigned int. If cannot be parsed, then throw
+ * exception.
+ *
+ * @param number is number ins string to parse
+ * @return unsigned int is parsed number
+ */
 unsigned int parse_to_unsigned(const std::string &number);

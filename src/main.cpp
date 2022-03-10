@@ -31,6 +31,7 @@ int main(int argc, char **args) {
   arguments arg = arguments();
   try {
     read_arguments(argc, args, arg);
+    // TODO if its 1, then something is wrong
   } catch (std::exception &e) {
     std::cout << e.what() << std::endl;
     exit(1);

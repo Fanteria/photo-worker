@@ -16,23 +16,66 @@ private:
   const fs::path src;
   const fs::path dest;
 
-  int load_picture(const std::string &, LibRaw &);
+  /**
+   * @brief Load picture with LiwRaw.
+   *
+   * @param file_name is name of loaded file
+   * @param iProcessor is reference for LibRaw processor
+   * @return int 0 if image was loaded, other numbers represents output of
+   * LibRaw open_file
+   */
+  int load_picture(const std::string &file_name, LibRaw &iProcessor);
 
-  PictureData *read_picture_data(LibRaw &);
+  /**
+   * @brief Read data about loaded picture.
+   *
+   * @param iProcessor is reference for LibRaw processor
+   * @return PictureData* pointer to loaded picture data
+   */
+  PictureData *read_picture_data(LibRaw &iProcessor);
 
-  void convert_picture(const std::string &, LibRaw &);
+  /**
+   * @brief Covert picture to tiff format.
+   *
+   * @param file_name is name of new file
+   * @param iProcessor is reference for LibRaw processor
+   */
+  void convert_picture(const std::string &file_name, LibRaw &iProcessor);
 
-  void process_picture(const std::string &, LibRaw &, std::shared_ptr<Pictures>,
-                       bool);
+  /**
+   * @brief Process picture and convert picture if convert is true.
+   *
+   * @param file_name is name of picture to procession
+   * @param iProcessor is reference to LibRaw processor
+   * @param pictures is shared pointer to class contains pictures
+   * @param convert if it is true, picture will be converted
+   */
+  void process_picture(const std::string &file_name, LibRaw &iProcessor,
+                       std::shared_ptr<Pictures> pictures, bool convert = true);
 
 public:
   bool verbose = false;
   bool quiet = false;
 
+  /**
+   * @brief Construct a new Convertor object.
+   *
+   * @param src path to source folder
+   * @param dest path to destination folder
+   */
   Convertor(const fs::path &src, const fs::path &dest) : src(src), dest(dest) {}
 
-  std::shared_ptr<Pictures> conver_photos_list(const std::vector<std::string> &,
-                                               unsigned int);
+  /**
+   * @brief Convert all pictures in list.
+   *
+   * @param pics list of pictures to convert
+   * @param threads number of threads for convert photos
+   * @return std::shared_ptr<Pictures> pointer to class with list of loaded data
+   * from pictures
+   */
+  std::shared_ptr<Pictures>
+  conver_photos_list(const std::vector<std::string> &pics,
+                     unsigned int threads = 1);
 };
 
 #endif // CONVERTOR_H_INCLUDED

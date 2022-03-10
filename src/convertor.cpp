@@ -33,7 +33,7 @@ void Convertor::convert_picture(const std::string &file_name,
 void Convertor::process_picture(const std::string &file_name,
                                 LibRaw &iProcessor,
                                 std::shared_ptr<Pictures> pictures,
-                                bool convert = true) {
+                                bool convert) {
   // Get only name of file
   std::string name = file_name.substr(0, file_name.find_last_of('.'));
 
@@ -47,7 +47,7 @@ void Convertor::process_picture(const std::string &file_name,
 
 std::shared_ptr<Pictures>
 Convertor::conver_photos_list(const std::vector<std::string> &pics,
-                              unsigned int threads = 1) {
+                              unsigned int threads) {
   LibRaw iProcessor;
 
   // Create shared pointer for Pictures class

@@ -12,10 +12,10 @@ PictureData *Pictures::get_pic_data(const std::string &name) {
   return pics[name];
 }
 
-std::string Pictures::listAll() {
-  std::string ret;
+std::vector<std::string> Pictures::listAll() {
+  std::vector<std::string> ret;
   for (auto const &i : pics) {
-    ret += i.first + "\n";
+    ret.push_back(i.first);
   }
   return ret;
 }

@@ -20,6 +20,8 @@ private:
   const fs::path dest;
   std::vector<LibRaw> iProcessors;
   std::vector<tjhandle> tjCompressors;
+  std::vector<unsigned char *> compImages;
+  std::vector<int> compImageSizes;
 
   /**
    * @brief Load picture with LiwRaw.
@@ -44,10 +46,10 @@ private:
    *
    * @param file_name is name of new file
    * @param iProcessor is reference for LibRaw processor
+   // TODO change doxygen
    */
-  void convert_picture(const std::string &file_name, LibRaw &iProcessor,
-                       tjhandle *compressor, unsigned char *compressedImage,
-                       long unsigned int *size, int quality);
+  void convert_picture(const std::string &file_name, size_t procNum,
+                       unsigned char *compressedImage, long unsigned int *size);
 
   /**
    * @brief Compress and save bitmap to jpg.
@@ -62,7 +64,7 @@ private:
    */
   void save_jpg(const libraw_processed_image_t *mem_image, tjhandle *compressor,
                 unsigned char *compressedImage, long unsigned int *size,
-                const std::string &name, int quality);
+                const std::string &name);
 
   /**
    * @brief Process picture and convert picture if convert is true.
@@ -95,6 +97,12 @@ public:
    */
   ~Convertor();
 
+  /**
+   * @brief Set the quality of picture. Value must be between 1 and 100
+   * included. If not, function throw std::invalid_argument exception.
+   *
+   * @param quality is quality of compressed image.
+   */
   void set_quality(unsigned int quality);
 
   /**

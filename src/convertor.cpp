@@ -1,4 +1,5 @@
 #include "convertor.hpp"
+#include <cstddef>
 #include <libraw/libraw_const.h>
 #include <turbojpeg.h>
 
@@ -20,25 +21,25 @@ PictureData *Convertor::read_picture_data(LibRaw &iProcessor) {
       iProcessor.imgdata.sizes.raw_width, iProcessor.imgdata.sizes.raw_height);
 }
 
-void Convertor::convert_picture(const std::string &file_name,
-                                LibRaw &iProcessor, tjhandle *compressor,
+void Convertor::convert_picture(const std::string &file_name, size_t procNum,
                                 unsigned char *compressedImage,
-                                long unsigned int *size, int quality) {
+                                long unsigned int *size) {
 
-  iProcessor.unpack();
+  LibRaw &proc = iProcessors[procNum];
+  proc.unpack();
 
   // Process picture to byte array
-  iProcessor.dcraw_process();
+  proc.dcraw_process();
 
   // Make memory buffer
   int errCode;
-  libraw_processed_image_t *mem_image =
-      iProcessor.dcraw_make_mem_image(&errCode);
+  libraw_processed_image_t *mem_image = proc.dcraw_make_mem_image(&errCode);
   // TODO Check errCode
 
   // TODO Create implementation for thumbnails.
   if (mem_image->type == LIBRAW_IMAGE_BITMAP) {
-    save_jpg(mem_image, compressor, compressedImage, size, file_name, quality);
+    save_jpg(mem_image, &tjCompressors[procNum], compressedImage, size,
+             file_name);
   }
 
   // Free memory buffer
@@ -47,8 +48,7 @@ void Convertor::convert_picture(const std::string &file_name,
 
 void Convertor::save_jpg(const libraw_processed_image_t *mem_image,
                          tjhandle *compressor, unsigned char *compressedImage,
-                         long unsigned int *size, const std::string &name,
-                         int quality) {
+                         long unsigned int *size, const std::string &name) {
 
   // Check if comressed buffer is long enough and free memory if is allocated.
   // Allocate new is not necessary, tjCompress will allocate if size is 0.
@@ -86,8 +86,7 @@ void Convertor::process_picture(const std::string &file_name,
     long unsigned int size = 0;
     unsigned char *compressedImage = nullptr;
 
-    convert_picture(dest / (name + ".jpg"), iProcessor, &compressor,
-                    compressedImage, &size, 75);
+    convert_picture(dest / (name + ".jpg"), 0, compressedImage, &size);
 
     tjDestroy(compressor);
     tjFree(compressedImage);
@@ -101,6 +100,8 @@ Convertor::Convertor(const fs::path &src, const fs::path &dest, size_t threads)
   for (size_t i = 0; i < threads; ++i) {
     iProcessors.push_back(LibRaw());
     tjCompressors.push_back(tjInitCompress());
+    compImages.push_back(nullptr);
+    compImageSizes.push_back(0);
   }
 }
 

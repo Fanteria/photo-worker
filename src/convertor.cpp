@@ -76,6 +76,7 @@ void Convertor::process_picture(const std::string &file_name,
   // Get only name of file
   std::string name = file_name.substr(0, file_name.find_last_of('.'));
 
+  // TODO check if image was loaded right
   load_picture(src / file_name, iProcessor);
 
   // Read picture data and add them to Pictures class
@@ -97,7 +98,7 @@ Convertor::Convertor(const fs::path &src, const fs::path &dest, size_t threads)
     : src(src), dest(dest), iProcessors(), tjCompressors() {
 
   // Create LibRaw and TurboJPEG instances
-  for (int i = 0; i < threads; ++i) {
+  for (size_t i = 0; i < threads; ++i) {
     iProcessors.push_back(LibRaw());
     tjCompressors.push_back(tjInitCompress());
   }
@@ -107,6 +108,13 @@ Convertor::~Convertor() {
   // Destroy TurboJPEG instances
   std::for_each(tjCompressors.begin(), tjCompressors.end(),
                 [](auto &comp) { tjDestroy(comp); });
+}
+
+void Convertor::set_quality(unsigned int quality) {
+  if (quality > 100 || quality == 0)
+    throw std::invalid_argument("Quality must be between 1 and 100 included.");
+
+  this->quality = quality;
 }
 
 std::shared_ptr<Pictures>

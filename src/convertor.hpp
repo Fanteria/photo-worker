@@ -15,6 +15,7 @@ namespace fs = std::filesystem;
 
 class Convertor {
 private:
+  int quality = 75;
   const fs::path src;
   const fs::path dest;
   std::vector<LibRaw> iProcessors;
@@ -28,7 +29,7 @@ private:
    * @return int 0 if image was loaded, other numbers represents output of
    * LibRaw open_file
    */
-  int load_picture(const std::string &file_name, LibRaw &iProcessor);
+  static int load_picture(const std::string &file_name, LibRaw &iProcessor);
 
   /**
    * @brief Read data about loaded picture.
@@ -36,7 +37,7 @@ private:
    * @param iProcessor is reference for LibRaw processor
    * @return PictureData* pointer to loaded picture data
    */
-  PictureData *read_picture_data(LibRaw &iProcessor);
+  static PictureData *read_picture_data(LibRaw &iProcessor);
 
   /**
    * @brief Covert picture to jpg format.
@@ -88,7 +89,13 @@ public:
    */
   Convertor(const fs::path &src, const fs::path &dest, size_t threads = 1);
 
+  /**
+   * @brief Destroy the Convertor object
+   *
+   */
   ~Convertor();
+
+  void set_quality(unsigned int quality);
 
   /**
    * @brief Convert all pictures in list.

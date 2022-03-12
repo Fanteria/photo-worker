@@ -93,6 +93,22 @@ void Convertor::process_picture(const std::string &file_name,
   }
 }
 
+Convertor::Convertor(const fs::path &src, const fs::path &dest, size_t threads)
+    : src(src), dest(dest), iProcessors(), tjCompressors() {
+
+  // Create LibRaw and TurboJPEG instances
+  for (int i = 0; i < threads; ++i) {
+    iProcessors.push_back(LibRaw());
+    tjCompressors.push_back(tjInitCompress());
+  }
+}
+
+Convertor::~Convertor() {
+  // Destroy TurboJPEG instances
+  std::for_each(tjCompressors.begin(), tjCompressors.end(),
+                [](auto &comp) { tjDestroy(comp); });
+}
+
 std::shared_ptr<Pictures>
 Convertor::conver_photos_list(const std::vector<std::string> &pics,
                               unsigned int threads) {
@@ -105,8 +121,5 @@ Convertor::conver_photos_list(const std::vector<std::string> &pics,
   for (auto const &pic : pics) {
     process_picture(pic, iProcessor, pictures);
   }
-
-  // Recycle data from LibRaw iProcessor
-  iProcessor.recycle();
   return pictures;
 }

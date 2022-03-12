@@ -1,10 +1,12 @@
 #ifndef CONVERTOR_H_INCLUDED
 #define CONVERTOR_H_INCLUDED
 
+#include <exception>
 #include <filesystem>
 #include <iostream>
 #include <libraw/libraw.h>
 #include <turbojpeg.h>
+#include <vector>
 
 #include "pictureData.hpp"
 #include "pictures.hpp"
@@ -15,6 +17,8 @@ class Convertor {
 private:
   const fs::path src;
   const fs::path dest;
+  std::vector<LibRaw> iProcessors;
+  std::vector<tjhandle> tjCompressors;
 
   /**
    * @brief Load picture with LiwRaw.
@@ -53,6 +57,7 @@ private:
    * @param size
    * @param name
    * @param quality
+   TODO Write doxygen
    */
   void save_jpg(const libraw_processed_image_t *mem_image, tjhandle *compressor,
                 unsigned char *compressedImage, long unsigned int *size,
@@ -78,8 +83,12 @@ public:
    *
    * @param src path to source folder
    * @param dest path to destination folder
+   * @param threads number of treads available for compressing images
+   TODO add threads
    */
-  Convertor(const fs::path &src, const fs::path &dest) : src(src), dest(dest) {}
+  Convertor(const fs::path &src, const fs::path &dest, size_t threads = 1);
+
+  ~Convertor();
 
   /**
    * @brief Convert all pictures in list.

@@ -35,12 +35,28 @@ private:
   PictureData *read_picture_data(LibRaw &iProcessor);
 
   /**
-   * @brief Covert picture to tiff format.
+   * @brief Covert picture to jpg format.
    *
    * @param file_name is name of new file
    * @param iProcessor is reference for LibRaw processor
    */
-  void convert_picture(const std::string &file_name, LibRaw &iProcessor);
+  void convert_picture(const std::string &file_name, LibRaw &iProcessor,
+                       tjhandle *compressor, unsigned char *compressedImage,
+                       long unsigned int *size, int quality);
+
+  /**
+   * @brief Compress and save bitmap to jpg.
+   *
+   * @param mem_image
+   * @param compressor
+   * @param compressedImage
+   * @param size
+   * @param name
+   * @param quality
+   */
+  void save_jpg(const libraw_processed_image_t *mem_image, tjhandle *compressor,
+                unsigned char *compressedImage, long unsigned int *size,
+                const std::string &name, int quality);
 
   /**
    * @brief Process picture and convert picture if convert is true.
@@ -70,8 +86,8 @@ public:
    *
    * @param pics list of pictures to convert
    * @param threads number of threads for convert photos
-   * @return std::shared_ptr<Pictures> pointer to class with list of loaded data
-   * from pictures
+   * @return std::shared_ptr<Pictures> pointer to class with list of loaded
+   * data from pictures
    */
   std::shared_ptr<Pictures>
   conver_photos_list(const std::vector<std::string> &pics,

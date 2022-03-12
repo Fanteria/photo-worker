@@ -87,8 +87,8 @@ public:
    *
    * @param src path to source folder
    * @param dest path to destination folder
-   * @param threads number of treads available for compressing images
-   TODO add threads
+   * @param threads number of treads available for compressing images minimum is
+   * 1, does not represents total number of threads
    */
   Convertor(const fs::path &src, const fs::path &dest, size_t threads = 1);
 
@@ -110,13 +110,11 @@ public:
    * @brief Convert all pictures in list.
    *
    * @param pics list of pictures to convert
-   * @param threads number of threads for convert photos
    * @return std::shared_ptr<Pictures> pointer to class with list of loaded
    * data from pictures
    */
   std::shared_ptr<Pictures>
-  conver_photos_list(const std::vector<std::string> &pics,
-                     unsigned int threads = 1);
+  conver_photos_list(const std::vector<std::string> &pics);
 };
 
 #endif // CONVERTOR_H_INCLUDED

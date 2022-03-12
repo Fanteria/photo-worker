@@ -62,13 +62,12 @@ int main(int argc, char **args) {
     worker.read_raw_files(*aux);
 
     // Initialize convertor
-    Convertor convertor = Convertor(arg.source, arg.destination);
+    Convertor convertor = Convertor(arg.source, arg.destination, arg.threads);
     convertor.verbose = arg.verbose;
     convertor.quiet = arg.quiet;
 
     // Convert pictures and take list of them with info
-    std::shared_ptr<Pictures> pictures =
-        convertor.conver_photos_list(*aux, arg.threads);
+    std::shared_ptr<Pictures> pictures = convertor.conver_photos_list(*aux);
 
     delete aux;
 

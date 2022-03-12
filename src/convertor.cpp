@@ -124,8 +124,7 @@ void Convertor::set_quality(unsigned int quality) {
 }
 
 std::shared_ptr<Pictures>
-Convertor::conver_photos_list(const std::vector<std::string> &pics,
-                              unsigned int threads) {
+Convertor::conver_photos_list(const std::vector<std::string> &pics) {
   LibRaw iProcessor;
 
   // Create shared pointer for Pictures class

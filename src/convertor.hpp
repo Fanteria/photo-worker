@@ -41,28 +41,27 @@ private:
    */
   static PictureData *read_picture_data(LibRaw &iProcessor);
 
-  // TODO Doxygen
+  /**
+   * @brief This method reset all buffer after processing all pictures. Does not
+   * have to be called after every processed picture.
+   *
+   */
   void reset_buffers();
 
   /**
    * @brief Covert picture to jpg format.
    *
    * @param file_name is name of new file
-   * @param iProcessor is reference for LibRaw processor
-   // TODO change doxygen
+   * @param procNum number of processor, convertor and buffer for this method
    */
   void convert_picture(const std::string &file_name, size_t procNum);
 
   /**
-   * @brief Compress and save bitmap to jpg.
+   * @brief Compress and save bitmap to jpeg image.
    *
-   * @param mem_image
-   * @param compressor
-   * @param compressedImage
-   * @param size
-   * @param name
-   * @param quality
-   TODO Write doxygen
+   * @param mem_image memory with bitmap image
+   * @param procNum number of processor, convertor and buffer for this method
+   * @param name is name of saved file
    */
   void save_jpg(const libraw_processed_image_t *mem_image, size_t procNum,
                 const std::string &name);
@@ -71,7 +70,7 @@ private:
    * @brief Process picture and convert picture if convert is true.
    *
    * @param file_name is name of picture to procession
-   * @param iProcessor is reference to LibRaw processor
+   * @param procNum number of processor, convertor and buffer for this method
    * @param pictures is shared pointer to class contains pictures
    * @param convert if it is true, picture will be converted
    */

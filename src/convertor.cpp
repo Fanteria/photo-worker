@@ -21,11 +21,9 @@ PictureData *Convertor::read_picture_data(LibRaw &iProcessor) {
       iProcessor.imgdata.sizes.raw_width, iProcessor.imgdata.sizes.raw_height);
 }
 
-void Convertor::convert_picture(const std::string &file_name, size_t procNum,
-                                unsigned char *compressedImage,
-                                long unsigned int *size) {
+void Convertor::convert_picture(const std::string &file_name, size_t procNum) {
 
-  LibRaw &proc = iProcessors[procNum];
+  LibRaw &proc = *iProcessors[procNum];
   proc.unpack();
 
   // Process picture to byte array
@@ -38,8 +36,7 @@ void Convertor::convert_picture(const std::string &file_name, size_t procNum,
 
   // TODO Create implementation for thumbnails.
   if (mem_image->type == LIBRAW_IMAGE_BITMAP) {
-    save_jpg(mem_image, &tjCompressors[procNum], compressedImage, size,
-             file_name);
+    save_jpg(mem_image, procNum, file_name);
   }
 
   // Free memory buffer
@@ -47,8 +44,10 @@ void Convertor::convert_picture(const std::string &file_name, size_t procNum,
 }
 
 void Convertor::save_jpg(const libraw_processed_image_t *mem_image,
-                         tjhandle *compressor, unsigned char *compressedImage,
-                         long unsigned int *size, const std::string &name) {
+                         size_t procNum, const std::string &name) {
+
+  unsigned long int *size = &compImageSizes[procNum];
+  unsigned char *compressedImage = compImages[procNum];
 
   // Check if comressed buffer is long enough and free memory if is allocated.
   // Allocate new is not necessary, tjCompress will allocate if size is 0.
@@ -59,7 +58,7 @@ void Convertor::save_jpg(const libraw_processed_image_t *mem_image,
   }
 
   // Compress and save image if it is bitmap
-  tjCompress2(*compressor, mem_image->data, mem_image->width, 0,
+  tjCompress2(tjCompressors[procNum], mem_image->data, mem_image->width, 0,
               mem_image->height, TJPF_RGB, &compressedImage, size, TJSAMP_444,
               quality, TJFLAG_FASTDCT);
 
@@ -69,27 +68,22 @@ void Convertor::save_jpg(const libraw_processed_image_t *mem_image,
   f.close();
 }
 
-void Convertor::process_picture(const std::string &file_name,
-                                LibRaw &iProcessor,
+void Convertor::process_picture(const std::string &file_name, size_t procNum,
                                 std::shared_ptr<Pictures> pictures,
                                 bool convert) {
   // Get only name of file
   std::string name = file_name.substr(0, file_name.find_last_of('.'));
 
   // TODO check if image was loaded right
-  load_picture(src / file_name, iProcessor);
+  load_picture(src / file_name, *iProcessors[procNum]);
 
   // Read picture data and add them to Pictures class
-  pictures->addPicture(name, read_picture_data(iProcessor));
+  pictures->addPicture(name, read_picture_data(*iProcessors[procNum]));
+
   if (convert) {
-    tjhandle compressor = tjInitCompress();
-    long unsigned int size = 0;
-    unsigned char *compressedImage = nullptr;
+    convert_picture(dest / (name + ".jpg"), 0);
 
-    convert_picture(dest / (name + ".jpg"), 0, compressedImage, &size);
-
-    tjDestroy(compressor);
-    tjFree(compressedImage);
+    // tjFree(compressedImage);
   }
 }
 
@@ -98,7 +92,7 @@ Convertor::Convertor(const fs::path &src, const fs::path &dest, size_t threads)
 
   // Create LibRaw and TurboJPEG instances
   for (size_t i = 0; i < threads; ++i) {
-    iProcessors.push_back(LibRaw());
+    iProcessors.push_back(new LibRaw());
     tjCompressors.push_back(tjInitCompress());
     compImages.push_back(nullptr);
     compImageSizes.push_back(0);
@@ -106,7 +100,9 @@ Convertor::Convertor(const fs::path &src, const fs::path &dest, size_t threads)
 }
 
 Convertor::~Convertor() {
-  // Destroy TurboJPEG instances
+  // Destroy LibRaw and TurboJPEG instances
+  std::for_each(iProcessors.begin(), iProcessors.end(),
+                [](auto &proc) { delete proc; });
   std::for_each(tjCompressors.begin(), tjCompressors.end(),
                 [](auto &comp) { tjDestroy(comp); });
 }
@@ -128,7 +124,7 @@ Convertor::conver_photos_list(const std::vector<std::string> &pics,
 
   // Process all pictures
   for (auto const &pic : pics) {
-    process_picture(pic, iProcessor, pictures);
+    process_picture(pic, 0, pictures);
   }
   return pictures;
 }

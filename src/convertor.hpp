@@ -18,10 +18,10 @@ private:
   int quality = 75;
   const fs::path src;
   const fs::path dest;
-  std::vector<LibRaw> iProcessors;
+  std::vector<LibRaw *> iProcessors;
   std::vector<tjhandle> tjCompressors;
   std::vector<unsigned char *> compImages;
-  std::vector<int> compImageSizes;
+  std::vector<unsigned long int> compImageSizes;
 
   /**
    * @brief Load picture with LiwRaw.
@@ -48,8 +48,7 @@ private:
    * @param iProcessor is reference for LibRaw processor
    // TODO change doxygen
    */
-  void convert_picture(const std::string &file_name, size_t procNum,
-                       unsigned char *compressedImage, long unsigned int *size);
+  void convert_picture(const std::string &file_name, size_t procNum);
 
   /**
    * @brief Compress and save bitmap to jpg.
@@ -62,8 +61,7 @@ private:
    * @param quality
    TODO Write doxygen
    */
-  void save_jpg(const libraw_processed_image_t *mem_image, tjhandle *compressor,
-                unsigned char *compressedImage, long unsigned int *size,
+  void save_jpg(const libraw_processed_image_t *mem_image, size_t procNum,
                 const std::string &name);
 
   /**
@@ -74,7 +72,7 @@ private:
    * @param pictures is shared pointer to class contains pictures
    * @param convert if it is true, picture will be converted
    */
-  void process_picture(const std::string &file_name, LibRaw &iProcessor,
+  void process_picture(const std::string &file_name, size_t procNum,
                        std::shared_ptr<Pictures> pictures, bool convert = true);
 
 public:

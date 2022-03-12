@@ -1,4 +1,5 @@
 #include "convertor.hpp"
+#include <algorithm>
 #include <cstddef>
 #include <libraw/libraw_const.h>
 #include <turbojpeg.h>
@@ -19,6 +20,17 @@ PictureData *Convertor::read_picture_data(LibRaw &iProcessor) {
       iProcessor.imgdata.sizes.iwidth, iProcessor.imgdata.sizes.iheight,
       iProcessor.imgdata.sizes.top_margin, iProcessor.imgdata.sizes.left_margin,
       iProcessor.imgdata.sizes.raw_width, iProcessor.imgdata.sizes.raw_height);
+}
+
+void Convertor::reset_buffers() {
+  // Free buffer allocated by TurboJPEG
+  std::for_each(compImages.begin(), compImages.end(), [](auto &buffer) {
+    tjFree(buffer);
+    buffer = nullptr;
+  });
+  // Set all lengths to 0
+  std::for_each(compImageSizes.begin(), compImageSizes.end(),
+                [](auto &size) { size = 0; });
 }
 
 void Convertor::convert_picture(const std::string &file_name, size_t procNum) {
@@ -80,11 +92,8 @@ void Convertor::process_picture(const std::string &file_name, size_t procNum,
   // Read picture data and add them to Pictures class
   pictures->addPicture(name, read_picture_data(*iProcessors[procNum]));
 
-  if (convert) {
+  if (convert)
     convert_picture(dest / (name + ".jpg"), 0);
-
-    // tjFree(compressedImage);
-  }
 }
 
 Convertor::Convertor(const fs::path &src, const fs::path &dest, size_t threads)
@@ -126,5 +135,6 @@ Convertor::conver_photos_list(const std::vector<std::string> &pics,
   for (auto const &pic : pics) {
     process_picture(pic, 0, pictures);
   }
+  reset_buffers();
   return pictures;
 }

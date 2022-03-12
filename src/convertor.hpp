@@ -41,6 +41,9 @@ private:
    */
   static PictureData *read_picture_data(LibRaw &iProcessor);
 
+  // TODO Doxygen
+  void reset_buffers();
+
   /**
    * @brief Covert picture to jpg format.
    *

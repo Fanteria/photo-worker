@@ -12,7 +12,7 @@ build: $(BIN)/$(TARGET)
 
 .PHONY: run
 run: $(BIN)/$(TARGET)
-	$(BIN)/$(TARGET) convert -s $(TEST)
+	$(BIN)/$(TARGET) convert -s $(TEST) -t 4
 
 .PHONY: debug
 debug: $(BIN)/$(TARGET)

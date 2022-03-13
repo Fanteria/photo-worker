@@ -140,7 +140,7 @@ std::string Convertor::get_info_string(size_t &last, size_t act, size_t max,
     info += (i > actLen) ? "." : "#";
   info += "]";
 
-  info += std::to_string(last) + "/" + std::to_string(max);
+  info += std::to_string(act) + "/" + std::to_string(max);
   return info;
 }
 
@@ -210,7 +210,7 @@ Convertor::conver_photos_list(const std::vector<std::string> &pics) {
   std::atomic<size_t> index = 0;
   std::thread tq;
   if (!quiet) {
-    tq = std::thread(Convertor::print_info, &index, &pics, 1, true);
+    tq = std::thread(Convertor::print_info, &index, &pics, 1, verbose);
   }
 
   std::thread t =

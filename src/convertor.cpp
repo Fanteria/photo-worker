@@ -115,10 +115,7 @@ void Convertor::process_list(size_t procNum, std::atomic<size_t> *index,
   while (size > i) {
     print = "thread: " + std::to_string(procNum) + "\tindex: ";
     print += std::to_string(i) + "\tname: " + (*pics)[i];
-    // std::cout << print + "\tstart\n";
-    //  TODO in multithred processing causes segfault
     process_picture((*pics)[i], procNum, picList);
-    // std::cout << print + "\tdone\n";
     i = (*index)++;
   }
 }

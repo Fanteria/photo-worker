@@ -82,18 +82,42 @@ private:
   void process_picture(const std::string &file_name, size_t procNum,
                        std::shared_ptr<Pictures> pictures, bool convert = true);
 
-  // TODO doxygen
+  /**
+   * @brief Function that use processor, compressor and buffers based on procNum
+   * and can run as thread.
+   *
+   * @param procNum is index of processor, compressor and buffers
+   * @param index shared index for pictures must be atomic
+   * @param pics collection of pictures names
+   * @param picList collection of data about pictures
+   */
   void process_list(size_t procNum, std::atomic<size_t> *index,
                     const std::vector<std::string> *pics,
                     std::shared_ptr<Pictures> picList);
 
-  // TODO doxygen
+  /**
+   * @brief Get the string with informations to print.
+   *
+   * @param last last printed item
+   * @param act actual conversion position
+   * @param max number of files to convertsion
+   * @param pics collection od pictures names
+   * @param verbose true if output should print converted filenames
+   * @return std::string informations about conversion
+   */
   static std::string get_info_string(size_t &last, size_t act, size_t max,
                                      const std::vector<std::string> &pics,
                                      bool verbose);
 
-  // TODO doxygen
-  static void print_info(std::atomic<size_t> *index,
+  /**
+   * @brief Function to print informations about conversion.
+   *
+   * @param index point to number of converted file
+   * @param pics collection of filenames
+   * @param threadNum number of threads thats run
+   * @param verbose true if output may contain filenames of converted files
+   */
+  static void print_info(const std::atomic<size_t> *index,
                          const std::vector<std::string> *pics, size_t threadNum,
                          bool verbose);
 

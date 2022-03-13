@@ -98,6 +98,7 @@ void Convertor::process_picture(const std::string &file_name, size_t procNum,
   load_picture(src / file_name, *iProcessors[procNum]);
 
   // Read picture data and add them to Pictures class
+  // TODO use mutex for thread safe push backs
   // pictures->addPicture(name, read_picture_data(*iProcessors[procNum]));
 
   if (convert)
@@ -145,7 +146,7 @@ std::string Convertor::get_info_string(size_t &last, size_t act, size_t max,
   return info;
 }
 
-void Convertor::print_info(std::atomic<size_t> *index,
+void Convertor::print_info(const std::atomic<size_t> *index,
                            const std::vector<std::string> *pics,
                            size_t threadNum, bool verbose) {
   size_t max = pics->size();

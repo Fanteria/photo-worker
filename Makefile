@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -g -Wall -Werror -pedantic --std=c++2a 
-CXXLINKFLAGS = -lraw -lturbojpeg
+CXXLINKFLAGS = -ltbb -lraw_r -lturbojpeg
 
 SRC = src
 BIN = bin

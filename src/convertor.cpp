@@ -97,10 +97,10 @@ void Convertor::process_picture(const std::string &file_name, size_t procNum,
   load_picture(src / file_name, *iProcessors[procNum]);
 
   // Read picture data and add them to Pictures class
-  pictures->addPicture(name, read_picture_data(*iProcessors[procNum]));
+  // pictures->addPicture(name, read_picture_data(*iProcessors[procNum]));
 
   if (convert)
-    convert_picture(dest / (name + ".jpg"), 0);
+    convert_picture(dest / (name + ".jpg"), procNum);
 }
 
 void Convertor::process_list(size_t procNum, std::atomic<size_t> *index,
@@ -189,45 +189,36 @@ void Convertor::set_quality(unsigned int quality) {
 
 std::shared_ptr<Pictures>
 Convertor::conver_photos_list(const std::vector<std::string> &pics) {
-  LibRaw iProcessor;
-
   // Create shared pointer for Pictures class
   auto pictures = std::make_shared<Pictures>();
 
-  /*
-  std::cout << "Size: " << pics.size() << std::endl;
-  std::vector<std::thread> threads;
+  // Create index for threads to read from vector
   std::atomic<size_t> index = 0;
+
+  // Process all pictures
+  std::vector<std::thread> threads;
   for (size_t i = 0; i < iProcessors.size(); ++i) {
     threads.push_back(std::thread(&Convertor::process_list, this, i, &index,
                                   &pics, pictures));
   }
 
-  for (auto &t : threads)
-    t.join();
-  */
-
-  std::atomic<size_t> index = 0;
+  // Start thread to print info about converting
   std::thread tq;
   if (!quiet) {
-    tq = std::thread(Convertor::print_info, &index, &pics, 1, verbose);
+    tq = std::thread(Convertor::print_info, &index, &pics, iProcessors.size(),
+                     verbose);
   }
 
-  std::thread t =
-      std::thread(&Convertor::process_list, this, 0, &index, &pics, pictures);
+  // Wait for end of converting
+  for (auto &t : threads)
+    t.join();
 
-  t.join();
-
-  // Process all pictures
-  /*
-  for (auto const &pic : pics) {
-    process_picture(pic, 0, pictures);
-  }
-  */
-
+  // Wait for end of printing
   if (!quiet) {
     tq.join();
   }
+
+  // Free buffers memory
   reset_buffers();
   return pictures;
 }

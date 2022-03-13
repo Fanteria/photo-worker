@@ -1,7 +1,14 @@
 #include "convertor.hpp"
+#include "pictures.hpp"
 #include <algorithm>
+#include <atomic>
+#include <chrono>
 #include <cstddef>
 #include <libraw/libraw_const.h>
+#include <memory>
+#include <ostream>
+#include <string>
+#include <thread>
 #include <turbojpeg.h>
 
 int Convertor::load_picture(const std::string &file_name, LibRaw &iProcessor) {
@@ -96,6 +103,63 @@ void Convertor::process_picture(const std::string &file_name, size_t procNum,
     convert_picture(dest / (name + ".jpg"), 0);
 }
 
+void Convertor::process_list(size_t procNum, std::atomic<size_t> *index,
+                             const std::vector<std::string> *pics,
+                             std::shared_ptr<Pictures> picList) {
+  size_t i = (*index)++;
+  std::string print;
+  size_t size = pics->size();
+
+  while (size > i) {
+    print = "thread: " + std::to_string(procNum) + "\tindex: ";
+    print += std::to_string(i) + "\tname: " + (*pics)[i];
+    // std::cout << print + "\tstart\n";
+    //  TODO in multithred processing causes segfault
+    process_picture((*pics)[i], procNum, picList);
+    // std::cout << print + "\tdone\n";
+    i = (*index)++;
+  }
+}
+
+std::string Convertor::get_info_string(size_t &last, size_t act, size_t max,
+                                       const std::vector<std::string> &pics,
+                                       bool verbose) {
+  std::string info = "\r";
+  // TODO Enable bar with variable len
+  size_t barLen = 20;
+  size_t actLen = act * barLen / max;
+
+  if (verbose) {
+    for (; last < act; ++last)
+      // TODO solve carrige return some better way
+      info += pics[last] + " converted             \n";
+  }
+
+  info += "[";
+  for (size_t i = 0; i < barLen; ++i)
+    info += (i > actLen) ? "." : "#";
+  info += "]";
+
+  info += std::to_string(last) + "/" + std::to_string(max);
+  return info;
+}
+
+void Convertor::print_info(std::atomic<size_t> *index,
+                           const std::vector<std::string> *pics,
+                           size_t threadNum, bool verbose) {
+  size_t max = pics->size();
+  size_t last = 0;
+  size_t i = 0;
+  while (i < max) {
+    std::cout << Convertor::get_info_string(last, i, max, *pics, verbose);
+    std::cout << std::flush;
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    i = *index - threadNum;
+  }
+  std::cout << Convertor::get_info_string(last, i, max, *pics, verbose);
+  std::cout << " DONE" << std::endl;
+}
+
 Convertor::Convertor(const fs::path &src, const fs::path &dest, size_t threads)
     : src(src), dest(dest), iProcessors(), tjCompressors() {
 
@@ -130,9 +194,39 @@ Convertor::conver_photos_list(const std::vector<std::string> &pics) {
   // Create shared pointer for Pictures class
   auto pictures = std::make_shared<Pictures>();
 
+  /*
+  std::cout << "Size: " << pics.size() << std::endl;
+  std::vector<std::thread> threads;
+  std::atomic<size_t> index = 0;
+  for (size_t i = 0; i < iProcessors.size(); ++i) {
+    threads.push_back(std::thread(&Convertor::process_list, this, i, &index,
+                                  &pics, pictures));
+  }
+
+  for (auto &t : threads)
+    t.join();
+  */
+
+  std::atomic<size_t> index = 0;
+  std::thread tq;
+  if (!quiet) {
+    tq = std::thread(Convertor::print_info, &index, &pics, 1, true);
+  }
+
+  std::thread t =
+      std::thread(&Convertor::process_list, this, 0, &index, &pics, pictures);
+
+  t.join();
+
   // Process all pictures
+  /*
   for (auto const &pic : pics) {
     process_picture(pic, 0, pictures);
+  }
+  */
+
+  if (!quiet) {
+    tq.join();
   }
   reset_buffers();
   return pictures;

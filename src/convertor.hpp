@@ -1,10 +1,14 @@
 #ifndef CONVERTOR_H_INCLUDED
 #define CONVERTOR_H_INCLUDED
 
+#include <atomic>
+#include <chrono>
 #include <exception>
 #include <filesystem>
 #include <iostream>
 #include <libraw/libraw.h>
+#include <memory>
+#include <thread>
 #include <turbojpeg.h>
 #include <vector>
 
@@ -76,6 +80,21 @@ private:
    */
   void process_picture(const std::string &file_name, size_t procNum,
                        std::shared_ptr<Pictures> pictures, bool convert = true);
+
+  // TODO doxygen
+  void process_list(size_t procNum, std::atomic<size_t> *index,
+                    const std::vector<std::string> *pics,
+                    std::shared_ptr<Pictures> picList);
+
+  // TODO doxygen
+  static std::string get_info_string(size_t &last, size_t act, size_t max,
+                                     const std::vector<std::string> &pics,
+                                     bool verbose);
+
+  // TODO doxygen
+  static void print_info(std::atomic<size_t> *index,
+                         const std::vector<std::string> *pics, size_t threadNum,
+                         bool verbose);
 
 public:
   bool verbose = false;

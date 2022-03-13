@@ -1,7 +1,9 @@
 #include "pictures.hpp"
+#include <pstl/glue_execution_defs.h>
 
 Pictures::~Pictures() {
-  std::for_each(pics.begin(), pics.end(), [](auto &pic) { delete pic.second; });
+  std::for_each(std::execution::par_unseq, pics.begin(), pics.end(),
+                [](auto &pic) { delete pic.second; });
 }
 
 void Pictures::addPicture(const std::string &name, PictureData *pic) {

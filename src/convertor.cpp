@@ -7,6 +7,7 @@
 #include <libraw/libraw_const.h>
 #include <memory>
 #include <ostream>
+#include <pstl/glue_execution_defs.h>
 #include <string>
 #include <thread>
 #include <turbojpeg.h>
@@ -174,10 +175,10 @@ Convertor::Convertor(const fs::path &src, const fs::path &dest, size_t threads)
 
 Convertor::~Convertor() {
   // Destroy LibRaw and TurboJPEG instances
-  std::for_each(iProcessors.begin(), iProcessors.end(),
-                [](auto &proc) { delete proc; });
-  std::for_each(tjCompressors.begin(), tjCompressors.end(),
-                [](auto &comp) { tjDestroy(comp); });
+  std::for_each(std::execution::par_unseq, iProcessors.begin(),
+                iProcessors.end(), [](auto &proc) { delete proc; });
+  std::for_each(std::execution::par_unseq, tjCompressors.begin(),
+                tjCompressors.end(), [](auto &comp) { tjDestroy(comp); });
 }
 
 void Convertor::set_quality(unsigned int quality) {

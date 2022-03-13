@@ -4,6 +4,7 @@
 #include <atomic>
 #include <chrono>
 #include <exception>
+#include <execution>
 #include <filesystem>
 #include <iostream>
 #include <libraw/libraw.h>

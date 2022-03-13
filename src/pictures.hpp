@@ -1,6 +1,7 @@
 #ifndef PICTURES_H_INCLUDED
 #define PICTURES_H_INCLUDED
 
+#include <execution>
 #include <map>
 #include <string>
 #include <vector>

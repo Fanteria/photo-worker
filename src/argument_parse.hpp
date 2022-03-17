@@ -1,13 +1,11 @@
 #include <filesystem>
 #include <getopt.h>
+#include <stdexcept>
 #include <string>
-#include <system_error>
-
-namespace fs = std::filesystem;
 
 struct arguments {
-  fs::path source = ".";
-  fs::path destination = ".";
+  std::filesystem::path source = ".";
+  std::filesystem::path destination = ".";
   unsigned int threads = 1;
   bool quiet = false;
   bool verbose = false;
@@ -34,7 +32,8 @@ int read_arguments(int argc, char **argv, arguments &arg);
  * @param must_exist if it is true, can create folder, if exist parent
  * @return std::filesystem::path created path
  */
-fs::path parse_to_path(const std::string &path, bool must_exist = true);
+std::filesystem::path parse_to_path(const std::string &path,
+                                    bool must_exist = true);
 
 /**
  * @brief Parse string to unsigned int. If cannot be parsed, then throw

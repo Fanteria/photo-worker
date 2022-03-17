@@ -1,10 +1,20 @@
 #include "convertor.hpp"
+#include <memory>
+#include <string>
 
-int Convertor::load_picture(const std::string &file_name, LibRaw &iProcessor) {
+using std::atomic, std::execution::par_unseq;
+using std::cerr, std::endl, std::cout;
+using std::for_each, std::to_string;
+using std::shared_ptr, std::make_shared;
+using std::string;
+using std::thread;
+using std::vector;
+
+int Convertor::load_picture(const string &file_name, LibRaw &iProcessor) {
   int ret;
   // Return if LibRaw open file
   if ((ret = iProcessor.open_file(file_name.c_str())) != LIBRAW_SUCCESS) {
-    std::cerr << "Error: " << libraw_strerror(ret) << std::endl;
+    cerr << "Error: " << libraw_strerror(ret) << endl;
     return ret;
   }
   return 0;
@@ -20,16 +30,16 @@ PictureData *Convertor::read_picture_data(LibRaw &iProcessor) {
 
 void Convertor::reset_buffers() {
   // Free buffer allocated by TurboJPEG
-  std::for_each(compImages.begin(), compImages.end(), [](auto &buffer) {
+  for_each(compImages.begin(), compImages.end(), [](auto &buffer) {
     tjFree(buffer);
     buffer = nullptr;
   });
   // Set all lengths to 0
-  std::for_each(compImageSizes.begin(), compImageSizes.end(),
-                [](auto &size) { size = 0; });
+  for_each(compImageSizes.begin(), compImageSizes.end(),
+           [](auto &size) { size = 0; });
 }
 
-void Convertor::convert_picture(const std::string &file_name, size_t procNum) {
+void Convertor::convert_picture(const string &file_name, size_t procNum) {
 
   LibRaw &proc = *iProcessors[procNum];
   proc.unpack();
@@ -52,7 +62,7 @@ void Convertor::convert_picture(const std::string &file_name, size_t procNum) {
 }
 
 void Convertor::save_jpg(const libraw_processed_image_t *mem_image,
-                         size_t procNum, const std::string &name) {
+                         size_t procNum, const string &name) {
 
   unsigned long int *size = &compImageSizes[procNum];
   unsigned char *compressedImage = compImages[procNum];
@@ -76,9 +86,8 @@ void Convertor::save_jpg(const libraw_processed_image_t *mem_image,
   f.close();
 }
 
-void Convertor::process_picture(const std::string &file_name, size_t procNum,
-                                std::shared_ptr<Pictures> pictures,
-                                bool convert) {
+void Convertor::process_picture(const string &file_name, size_t procNum,
+                                shared_ptr<Pictures> pictures, bool convert) {
   // Get only name of file
   std::string name = file_name.substr(0, file_name.find_last_of('.'));
 
@@ -93,25 +102,24 @@ void Convertor::process_picture(const std::string &file_name, size_t procNum,
     convert_picture(dest / (name + ".jpg"), procNum);
 }
 
-void Convertor::process_list(size_t procNum, std::atomic<size_t> *index,
-                             const std::vector<std::string> *pics,
-                             std::shared_ptr<Pictures> picList) {
+void Convertor::process_list(size_t procNum, atomic<size_t> *index,
+                             const vector<string> *pics,
+                             shared_ptr<Pictures> picList) {
   size_t i = (*index)++;
-  std::string print;
+  string print;
   size_t size = pics->size();
 
   while (size > i) {
-    print = "thread: " + std::to_string(procNum) + "\tindex: ";
-    print += std::to_string(i) + "\tname: " + (*pics)[i];
+    print = "thread: " + to_string(procNum) + "\tindex: ";
+    print += to_string(i) + "\tname: " + (*pics)[i];
     process_picture((*pics)[i], procNum, picList);
     i = (*index)++;
   }
 }
 
-std::string Convertor::get_info_string(size_t &last, size_t act, size_t max,
-                                       const std::vector<std::string> &pics,
-                                       bool verbose) {
-  std::string info = "\r";
+string Convertor::get_info_string(size_t &last, size_t act, size_t max,
+                                  const vector<string> &pics, bool verbose) {
+  string info = "\r";
   // TODO Enable bar with variable len
   size_t barLen = 20;
   size_t actLen = act * barLen / max;
@@ -127,24 +135,24 @@ std::string Convertor::get_info_string(size_t &last, size_t act, size_t max,
     info += (i > actLen) ? "." : "#";
   info += "]";
 
-  info += std::to_string(act) + "/" + std::to_string(max);
+  info += to_string(act) + "/" + to_string(max);
   return info;
 }
 
-void Convertor::print_info(const std::atomic<size_t> *index,
-                           const std::vector<std::string> *pics,
-                           size_t threadNum, bool verbose) {
+void Convertor::print_info(const atomic<size_t> *index,
+                           const vector<string> *pics, size_t threadNum,
+                           bool verbose) {
   size_t max = pics->size();
   size_t last = 0;
   size_t i = 0;
   while (i < max) {
-    std::cout << Convertor::get_info_string(last, i, max, *pics, verbose);
-    std::cout << std::flush;
+    cout << Convertor::get_info_string(last, i, max, *pics, verbose);
+    cout << std::flush;
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
     i = *index - threadNum;
   }
-  std::cout << Convertor::get_info_string(last, i, max, *pics, verbose);
-  std::cout << " DONE" << std::endl;
+  cout << Convertor::get_info_string(last, i, max, *pics, verbose);
+  cout << " DONE" << endl;
 }
 
 Convertor::Convertor(const fs::path &src, const fs::path &dest, size_t threads)
@@ -161,10 +169,10 @@ Convertor::Convertor(const fs::path &src, const fs::path &dest, size_t threads)
 
 Convertor::~Convertor() {
   // Destroy LibRaw and TurboJPEG instances
-  std::for_each(std::execution::par_unseq, iProcessors.begin(),
-                iProcessors.end(), [](auto &proc) { delete proc; });
-  std::for_each(std::execution::par_unseq, tjCompressors.begin(),
-                tjCompressors.end(), [](auto &comp) { tjDestroy(comp); });
+  for_each(par_unseq, iProcessors.begin(), iProcessors.end(),
+           [](auto &proc) { delete proc; });
+  for_each(par_unseq, tjCompressors.begin(), tjCompressors.end(),
+           [](auto &comp) { tjDestroy(comp); });
 }
 
 void Convertor::set_quality(unsigned int quality) {
@@ -174,26 +182,25 @@ void Convertor::set_quality(unsigned int quality) {
   this->quality = quality;
 }
 
-std::shared_ptr<Pictures>
-Convertor::conver_photos_list(const std::vector<std::string> &pics) {
+shared_ptr<Pictures> Convertor::conver_photos_list(const vector<string> &pics) {
   // Create shared pointer for Pictures class
-  auto pictures = std::make_shared<Pictures>();
+  auto pictures = make_shared<Pictures>();
 
   // Create index for threads to read from vector
-  std::atomic<size_t> index = 0;
+  atomic<size_t> index = 0;
 
   // Process all pictures
-  std::vector<std::thread> threads;
+  vector<thread> threads;
   for (size_t i = 0; i < iProcessors.size(); ++i) {
-    threads.push_back(std::thread(&Convertor::process_list, this, i, &index,
-                                  &pics, pictures));
+    threads.push_back(
+        thread(&Convertor::process_list, this, i, &index, &pics, pictures));
   }
 
   // Start thread to print info about converting
-  std::thread tq;
+  thread tq;
   if (!quiet) {
-    tq = std::thread(Convertor::print_info, &index, &pics, iProcessors.size(),
-                     verbose);
+    tq = thread(Convertor::print_info, &index, &pics, iProcessors.size(),
+                verbose);
   }
 
   // Wait for end of converting

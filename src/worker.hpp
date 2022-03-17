@@ -7,14 +7,12 @@
 #include <string>
 #include <vector>
 
-namespace fs = std::filesystem;
-
 enum work_type { original, converted, both };
 
 class Worker {
 private:
-  const fs::path src;
-  const fs::path dest;
+  const std::filesystem::path src;
+  const std::filesystem::path dest;
 
   /**
    * @brief Create path with new name of last file.
@@ -23,7 +21,8 @@ private:
    * @param name is new name
    * @return fs::path is path with new name
    */
-  static fs::path new_path(const fs::path &path, const std::string &name);
+  static std::filesystem::path new_path(const std::filesystem::path &path,
+                                        const std::string &name);
 
   /**
    * @brief Get the sorted set of files included in directory.
@@ -33,8 +32,9 @@ private:
    * files will be sorted
    * @return std::set<fs::path> set of sorted files
    */
-  static std::set<fs::path> get_sorted_files(const fs::path &path,
-                                             const std::string *suffix);
+  static std::set<std::filesystem::path>
+  get_sorted_files(const std::filesystem::path &path,
+                   const std::string *suffix);
 
   /**
    * @brief Remove all files thats in synced folder and not in original folder.
@@ -42,8 +42,8 @@ private:
    * @param original folder that contains files for sync
    * @param synced folder with files thats will be removed
    */
-  static void remove_surplus_files(const fs::path &original,
-                                   const fs::path &synced);
+  static void remove_surplus_files(const std::filesystem::path &original,
+                                   const std::filesystem::path &synced);
 
 public:
   std::string raw_suffix = ".CR2";
@@ -57,7 +57,8 @@ public:
    * @param src is folder with raw pictures
    * @param dest is folder with converted pictures
    */
-  Worker(const fs::path &src, const fs::path &dest) : src(src), dest(dest) {}
+  Worker(const std::filesystem::path &src, const std::filesystem::path &dest)
+      : src(src), dest(dest) {}
 
   /**
    * @brief Method for sync pictures in folders.
@@ -105,7 +106,7 @@ public:
    * @param path is path to file
    * @return std::string is name of file in path
    */
-  static std::string get_filename(const fs::path &path);
+  static std::string get_filename(const std::filesystem::path &path);
 
   /**
    * @brief Add all files with specified suffix to vector in argument.
@@ -115,7 +116,8 @@ public:
    * @param path is path to directory with files
    */
   static void read_files(std::vector<std::string> &files,
-                         const std::string &suffix, const fs::path &path);
+                         const std::string &suffix,
+                         const std::filesystem::path &path);
 
   /**
    * @brief Method fo rename all files with specified suffix in specified
@@ -129,7 +131,7 @@ public:
    * @param verbose if it is true, output will be verbose
    * @param ask if it is true, ask for every file while renamig
    */
-  static void rename_files_in_folder(const fs::path &path,
+  static void rename_files_in_folder(const std::filesystem::path &path,
                                      const std::string &name,
                                      const std::string &suffix, bool renumber,
                                      bool verbose, bool ask);

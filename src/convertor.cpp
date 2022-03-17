@@ -1,16 +1,4 @@
 #include "convertor.hpp"
-#include "pictures.hpp"
-#include <algorithm>
-#include <atomic>
-#include <chrono>
-#include <cstddef>
-#include <libraw/libraw_const.h>
-#include <memory>
-#include <ostream>
-#include <pstl/glue_execution_defs.h>
-#include <string>
-#include <thread>
-#include <turbojpeg.h>
 
 int Convertor::load_picture(const std::string &file_name, LibRaw &iProcessor) {
   int ret;

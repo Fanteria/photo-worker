@@ -1,5 +1,4 @@
 #include "pictures.hpp"
-#include <pstl/glue_execution_defs.h>
 
 Pictures::~Pictures() {
   std::for_each(std::execution::par_unseq, pics.begin(), pics.end(),

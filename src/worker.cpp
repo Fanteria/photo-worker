@@ -1,8 +1,5 @@
 #include "worker.hpp"
 
-#include <filesystem>
-#include <iostream>
-
 inline fs::path Worker::new_path(const fs::path &path,
                                  const std::string &name) {
   return path.parent_path() / name;

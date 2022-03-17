@@ -1,6 +1,4 @@
 #include "argument_parse.hpp"
-#include <bits/getopt_core.h>
-#include <bits/getopt_ext.h>
 
 int read_arguments(int argc, char **argv, arguments &arg) {
   // Define possible flags for getopt

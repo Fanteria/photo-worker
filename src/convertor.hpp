@@ -16,13 +16,11 @@
 #include "pictureData.hpp"
 #include "pictures.hpp"
 
-namespace fs = std::filesystem;
-
 class Convertor {
 private:
   int quality = 75;
-  const fs::path src;
-  const fs::path dest;
+  const std::filesystem::path src;
+  const std::filesystem::path dest;
   std::vector<LibRaw *> iProcessors;
   std::vector<tjhandle> tjCompressors;
   std::vector<unsigned char *> compImages;
@@ -133,7 +131,8 @@ public:
    * @param threads number of treads available for compressing images minimum is
    * 1, does not represents total number of threads
    */
-  Convertor(const fs::path &src, const fs::path &dest, size_t threads = 1);
+  Convertor(const std::filesystem::path &src, const std::filesystem::path &dest,
+            size_t threads = 1);
 
   /**
    * @brief Destroy the Convertor object

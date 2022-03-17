@@ -2,6 +2,8 @@
 #include <memory>
 #include <string>
 
+namespace fs = std::filesystem;
+
 using std::atomic, std::execution::par_unseq;
 using std::cerr, std::endl, std::cout;
 using std::for_each, std::to_string;

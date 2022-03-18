@@ -1,8 +1,6 @@
-#include <cstdlib>
+#include <exception>
 #include <iostream>
-#include <libraw/libraw.h>
 #include <string>
-#include <vector>
 
 #include "argument_parse.hpp"
 #include "convertor.hpp"

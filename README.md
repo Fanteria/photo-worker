@@ -32,4 +32,4 @@ You can check GitHub pages for documentation. If you want something else, the co
 
 ## Conclusion
 
-Be aware of using this code without backing up your files. I'm trying my best, but the code is not tested enough and can behave in unexpected ways. If you don't know, how the program works, try it on testing photos. Also feels free to contact me or create an issue if you find a bug or strange behaviour of the program. And in the end, I'm sorry for my crappy English.
+Be aware of using this code without backing up your files. I'm trying my best, but the code is not tested enough and can behave in unexpected ways. If you don't know, how the program works, try it on testing photos. Also feels free to contact me or create an issue if you find a bug or strange behavior of the program. And in the end, I'm sorry for my crappy English.

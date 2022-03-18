@@ -28,7 +28,7 @@ As you can see, you can use flag quiet and verbose at same time. If you do it, f
 
 ## Documentation
 
-Code is documented in headers files with Doxygen syntax. So you can read it int header files or use [Doxygen](https://www.doxygen.nl/index.html) to generate it.
+You can check github pages for documentation. If you want something else, code is documented in headers files with Doxygen syntax. So you can read it int header files or use [Doxygen](https://www.doxygen.nl/index.html) to generate it.
 
 ## Conclusion
 

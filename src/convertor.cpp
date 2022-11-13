@@ -45,6 +45,8 @@ void Convertor::convert_picture(const string &file_name, size_t procNum) {
 
   LibRaw &proc = *iProcessors[procNum];
   proc.unpack();
+  proc.imgdata.params.use_auto_wb = 1;
+  proc.imgdata.params.bright = 2;
 
   // Process picture to byte array
   proc.dcraw_process();

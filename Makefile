@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -g -Wall -Werror -pedantic --std=c++2a 
+CXXFLAGS = -g -Wall -Werror -pedantic --std=c++2a -O3
 CXXLINKFLAGS = -ltbb -lraw_r -lturbojpeg
 
 SRC = src

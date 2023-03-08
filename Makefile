@@ -38,5 +38,5 @@ $(BIN)/main.o: $(SRC)/main.cpp $(SRC)/argument_parse.hpp $(SRC)/convertor.hpp $(
 $(BIN)/argument_parse.o: $(SRC)/argument_parse.cpp $(SRC)/argument_parse.hpp
 $(BIN)/convertor.o: $(SRC)/convertor.cpp $(SRC)/convertor.hpp $(SRC)/pictures.hpp $(SRC)/pictureData.hpp
 $(BIN)/pictures.o: $(SRC)/pictures.cpp $(SRC)/pictures.hpp $(SRC)/pictureData.hpp
-$BIN)/pictureData.o: $(SRC)/pictureData.cpp $(SRC)/pictureData.hpp
+$(BIN)/pictureData.o: $(SRC)/pictureData.cpp $(SRC)/pictureData.hpp
 $(BIN)/worker.o: $(SRC)/worker.cpp $(SRC)/worker.hpp

@@ -1,5 +1,7 @@
 #include "argument_parse.hpp"
 
+#include <stdexcept>
+
 namespace fs = std::filesystem;
 
 using std::invalid_argument;

@@ -4,6 +4,15 @@ using std::make_pair;
 using std::ostream, std::endl;
 using std::pair;
 
+PictureData::PictureData(const unsigned int width, const unsigned int height,
+            const unsigned int out_width, const unsigned int out_height,
+            const unsigned int top_margin, const unsigned int left_margin,
+            const unsigned int raw_width, const unsigned int raw_height)
+    : width(width), height(height), out_width(out_width),
+      out_height(out_height), top_margin(top_margin),
+      left_margin(left_margin), raw_width(raw_width), raw_height(raw_height) {
+}
+
 pair<unsigned int, unsigned int> PictureData::get_image_size() {
   return make_pair(this->width, this->height);
 }

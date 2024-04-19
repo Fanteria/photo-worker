@@ -1,6 +1,5 @@
 #include <filesystem>
 #include <getopt.h>
-#include <stdexcept>
 #include <string>
 
 struct arguments {

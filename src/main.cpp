@@ -11,7 +11,11 @@ enum run_type { sync_files, rename_files, convert_files };
 
 int main(int argc, char **args) {
   run_type selected;
-  std::string argument = std::string(*(args + 1));
+  if (argc < 2) {
+    std::cout << "Help:" << std::endl;
+    return EXIT_FAILURE;
+  }
+  const std::string argument(args[1]);
 
   // Process first arguments
   if (argument == "sync")
@@ -26,14 +30,14 @@ int main(int argc, char **args) {
   }
 
   // Process all flags and save them to structure
-  arguments arg = arguments();
+  arguments arg;
   try {
     if (read_arguments(argc, args, arg)) {
       std::cout << "Fail to load arguments." << std::endl;
     }
   } catch (std::exception &e) {
     std::cout << e.what() << std::endl;
-    exit(1);
+    return EXIT_FAILURE;
   }
 
   // Init worker

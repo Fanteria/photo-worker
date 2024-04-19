@@ -1,5 +1,7 @@
 #include "worker.hpp"
 
+#include <map>
+
 namespace fs = std::filesystem;
 
 using std::set, std::map, std::pair, std::vector;
@@ -37,6 +39,9 @@ void Worker::remove_surplus_files(const fs::path &original,
     fs::remove(file.second);
   }
 }
+
+Worker::Worker(const std::filesystem::path &src, const std::filesystem::path &dest)
+    : src(src), dest(dest) {}
 
 void Worker::sync_photos(work_type type) {
   switch (type) {

@@ -1,7 +1,6 @@
 #ifndef PICTURES_H_INCLUDED
 #define PICTURES_H_INCLUDED
 
-#include <execution>
 #include <map>
 #include <string>
 #include <vector>
@@ -10,6 +9,7 @@
 
 class Pictures {
 private:
+  // TODO use unique pointer
   std::map<std::string, PictureData *> pics;
 
 public:
@@ -17,7 +17,7 @@ public:
    * @brief Construct a new Pictures object
    *
    */
-  Pictures() : pics() {}
+  Pictures() = default;
 
   /**
    * @brief Destroy the Pictures object
@@ -26,7 +26,7 @@ public:
   ~Pictures();
 
   /**
-   * @brief
+   * @brief Add picture to map of pictures.
    *
    * @param name is name of picture
    * @param pic pointer to picture data class, that will be freed in destructor

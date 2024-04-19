@@ -2,14 +2,9 @@
 #define CONVERTOR_H_INCLUDED
 
 #include <atomic>
-#include <chrono>
-#include <exception>
-#include <execution>
 #include <filesystem>
-#include <iostream>
 #include <libraw/libraw.h>
 #include <memory>
-#include <thread>
 #include <turbojpeg.h>
 #include <vector>
 

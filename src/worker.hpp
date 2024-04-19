@@ -2,7 +2,6 @@
 #define WORKER_H_INCLUDED
 
 #include <filesystem>
-#include <map>
 #include <set>
 #include <string>
 #include <vector>
@@ -57,8 +56,7 @@ public:
    * @param src is folder with raw pictures
    * @param dest is folder with converted pictures
    */
-  Worker(const std::filesystem::path &src, const std::filesystem::path &dest)
-      : src(src), dest(dest) {}
+  Worker(const std::filesystem::path &src, const std::filesystem::path &dest);
 
   /**
    * @brief Method for sync pictures in folders.

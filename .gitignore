@@ -1,5 +1,3 @@
 test/jpg/*
 bin/*
-.vscode
-html/
-latex/
+compile_commands.json

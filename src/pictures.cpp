@@ -1,4 +1,6 @@
 #include "pictures.hpp"
+
+#include <execution>
 #include <pstl/glue_execution_defs.h>
 #include <vector>
 
@@ -6,6 +8,7 @@ using std::for_each;
 using std::string;
 using std::vector;
 using std::execution::par_unseq;
+
 
 Pictures::~Pictures() {
   for_each(par_unseq, pics.begin(), pics.end(),

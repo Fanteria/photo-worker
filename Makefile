@@ -1,27 +1,29 @@
+PROJECT = photo-worker
+
 CXX = g++
 CXXFLAGS = -g -Wall -pedantic --std=c++2a
+CXXFLAGS += -DPROJECT_NAME=\"$(PROJECT)\"
 CXXLINKFLAGS = -ltbb -lraw_r -lturbojpeg
 
 SRC = src
 BIN = bin
 TEST = test
-TARGET = photo-worker
  
 .PHONY: build
 build: CXXFLAGS += -Werror
-build: $(BIN)/$(TARGET)
+build: $(BIN)/$(PROJECT)
 
 .PHONY: release
-release: CXXFLAGS += -O3
-release: $(BIN)/$(TARGET) 
+release: CXXFLAGS += -O3 -DVERSION=\"$(shell git describe)\"
+release: $(BIN)/$(PROJECT) 
 
 .PHONY: run
-run: $(BIN)/$(TARGET)
-	$(BIN)/$(TARGET) convert -s $(TEST) -t 4
+run: $(BIN)/$(PROJECT)
+	$(BIN)/$(PROJECT) convert -s $(TEST) -t 4
 
 .PHONY: debug
-debug: $(BIN)/$(TARGET)
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose $(BIN)/$(TARGET) -s $(TEST)
+debug: $(BIN)/$(PROJECT)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose $(BIN)/$(PROJECT) -s $(TEST)
 
 .PHONY: clean
 clean:
@@ -55,7 +57,7 @@ format:
 # $^ all rules for dependency (after :)
 # $< first parametr of dependency (before :)
 # $@ target of rule (before :)
-$(BIN)/$(TARGET): $(BIN)/main.o $(BIN)/argument_parse.o $(BIN)/convertor.o $(BIN)/pictures.o $(BIN)/pictureData.o $(BIN)/worker.o
+$(BIN)/$(PROJECT): $(BIN)/main.o $(BIN)/argument_parse.o $(BIN)/convertor.o $(BIN)/pictures.o $(BIN)/pictureData.o $(BIN)/worker.o
 	@mkdir -p $(BIN)
 	$(CXX) $(CXXLINKFLAGS) $^ -o $@
 

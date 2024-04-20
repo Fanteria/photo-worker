@@ -2,6 +2,15 @@
 
 #include <stdexcept>
 
+// If version is not set by Makefile, use dirty
+#ifndef VERSION
+#define VERSION "dirty"
+#endif
+
+#ifndef PROJECT_NAME
+#define PROJECT_NAME "unknown"
+#endif
+
 namespace fs = std::filesystem;
 
 using std::invalid_argument;
@@ -95,6 +104,21 @@ Arguments::Arguments(int argc, char **argv) {
 }
 
 void Arguments::help(std::ostream &os) noexcept {
-  os << "Help: TODO";
-  os << '\n';
+  os << "Usage: " PROJECT_NAME "COMMAND [OPTIONS]\n\n";
+  os << "Version: " VERSION "\n";
+  os << "This project implements the conversion from raw format to jpeg"
+        "images and enable some basic photo movements.\n\n"
+        "Commands:\n"
+        "  sync   \tSynchronize files between two folders independent of the extension.\n"
+        "  rename \tRename and renumber files in given directory.\n"
+        "  convert\tCovert raw files to jpeg.\n"
+        "\n"
+        "Options:\n"
+        "  -s, --source     \tSource directory. Default is `.`.\n"
+        "  -d, --destination\tDestination directory. Default is `.`.\n"
+        "  -t, --threads    \tNumber of threads used to work. Default is 1.\n"
+        "  -q, --quiet      \tMake run quiet.\n"
+        "  -v, --verbose    \tMake run more verbose.\n"
+        "  -a, --ask        \tAsk for changes to made.\n"
+        "  -n, --name       \tNon empty name for renaming.\n";
 }

@@ -1,3 +1,4 @@
 test/jpg/*
 bin/*
 compile_commands.json
+build/*

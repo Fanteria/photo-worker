@@ -29,7 +29,7 @@ private:
    * @return int 0 if image was loaded, other numbers represents output of
    * LibRaw open_file
    */
-  static int load_picture(const std::string &file_name, LibRaw &iProcessor);
+  static int load_picture(const std::string &file_name, LibRaw &iProcessor) noexcept;
 
   /**
    * @brief Read data about loaded picture.
@@ -37,14 +37,13 @@ private:
    * @param iProcessor is reference for LibRaw processor
    * @return PictureData* pointer to loaded picture data
    */
-  static PictureData *read_picture_data(LibRaw &iProcessor);
+  static PictureData *read_picture_data(LibRaw &iProcessor) noexcept;
 
   /**
    * @brief This method reset all buffer after processing all pictures. Does not
    * have to be called after every processed picture.
-   *
    */
-  void reset_buffers();
+  void reset_buffers() noexcept;
 
   /**
    * @brief Covert picture to jpg format.
@@ -52,7 +51,7 @@ private:
    * @param file_name is name of new file
    * @param procNum number of processor, convertor and buffer for this method
    */
-  void convert_picture(const std::string &file_name, size_t procNum);
+  void convert_picture(const std::string &file_name, size_t procNum) noexcept;
 
   /**
    * @brief Compress and save bitmap to jpeg image.
@@ -62,7 +61,7 @@ private:
    * @param name is name of saved file
    */
   void save_jpg(const libraw_processed_image_t *mem_image, size_t procNum,
-                const std::string &name);
+                const std::string &name) noexcept;
 
   /**
    * @brief Process picture and convert picture if convert is true.
@@ -73,7 +72,7 @@ private:
    * @param convert if it is true, picture will be converted
    */
   void process_picture(const std::string &file_name, size_t procNum,
-                       std::shared_ptr<Pictures> pictures, bool convert = true);
+                       std::shared_ptr<Pictures> pictures, bool convert = true) noexcept;
 
   /**
    * @brief Function that use processor, compressor and buffers based on procNum
@@ -86,10 +85,12 @@ private:
    */
   void process_list(size_t procNum, std::atomic<size_t> *index,
                     const std::vector<std::string> *pics,
-                    std::shared_ptr<Pictures> picList);
+                    std::shared_ptr<Pictures> picList) noexcept;
 
   /**
    * @brief Get the string with informations to print.
+   *
+   * @exception invalid_argument Throws if max is zero.
    *
    * @param last last printed item
    * @param act actual conversion position
@@ -112,7 +113,7 @@ private:
    */
   static void print_info(const std::atomic<size_t> *index,
                          const std::vector<std::string> *pics, size_t threadNum,
-                         bool verbose);
+                         bool verbose) noexcept;
 
 public:
   bool verbose = false;
@@ -121,27 +122,29 @@ public:
   /**
    * @brief Construct a new Convertor object.
    *
-   * @param src path to source folder
-   * @param dest path to destination folder
+   * @param src_ path to source folder
+   * @param dest_ path to destination folder
    * @param threads number of treads available for compressing images minimum is
    * 1, does not represents total number of threads
    */
-  Convertor(const std::filesystem::path &src, const std::filesystem::path &dest,
-            size_t threads = 1);
+  Convertor(const std::filesystem::path &src_, const std::filesystem::path &dest_,
+            size_t threads = 1) noexcept;
 
   /**
    * @brief Destroy the Convertor object
    *
    */
-  ~Convertor();
+  ~Convertor() noexcept;
 
   /**
    * @brief Set the quality of picture. Value must be between 1 and 100
    * included. If not, function throw std::invalid_argument exception.
    *
-   * @param quality is quality of compressed image.
+   * @exception invalid_argument Throws if quality is not in given range.
+   *
+   * @param quality_ is quality of compressed image.
    */
-  void set_quality(unsigned int quality);
+  void set_quality(unsigned int quality_);
 
   /**
    * @brief Convert all pictures in list.
@@ -150,8 +153,7 @@ public:
    * @return std::shared_ptr<Pictures> pointer to class with list of loaded
    * data from pictures
    */
-  std::shared_ptr<Pictures>
-  conver_photos_list(const std::vector<std::string> &pics);
+  std::shared_ptr<Pictures> conver_photos_list(const std::vector<std::string> &pics) noexcept;
 };
 
 #endif // CONVERTOR_H_INCLUDED

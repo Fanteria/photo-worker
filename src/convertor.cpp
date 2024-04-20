@@ -2,6 +2,7 @@
 
 #include <chrono>
 #include <execution>
+#include <ios>
 #include <memory>
 #include <string>
 #include <iostream>
@@ -17,7 +18,7 @@ using std::string;
 using std::thread;
 using std::vector;
 
-int Convertor::load_picture(const string &file_name, LibRaw &iProcessor) {
+int Convertor::load_picture(const string &file_name, LibRaw &iProcessor) noexcept {
   int ret;
   // Return if LibRaw open file
   if ((ret = iProcessor.open_file(file_name.c_str())) != LIBRAW_SUCCESS) {
@@ -27,7 +28,7 @@ int Convertor::load_picture(const string &file_name, LibRaw &iProcessor) {
   return 0;
 }
 
-PictureData *Convertor::read_picture_data(LibRaw &iProcessor) {
+PictureData *Convertor::read_picture_data(LibRaw &iProcessor) noexcept {
   return new PictureData(
       iProcessor.imgdata.sizes.width, iProcessor.imgdata.sizes.height,
       iProcessor.imgdata.sizes.iwidth, iProcessor.imgdata.sizes.iheight,
@@ -35,7 +36,7 @@ PictureData *Convertor::read_picture_data(LibRaw &iProcessor) {
       iProcessor.imgdata.sizes.raw_width, iProcessor.imgdata.sizes.raw_height);
 }
 
-void Convertor::reset_buffers() {
+void Convertor::reset_buffers() noexcept {
   // Free buffer allocated by TurboJPEG
   for_each(compImages.begin(), compImages.end(), [](auto &buffer) {
     tjFree(buffer);
@@ -46,7 +47,7 @@ void Convertor::reset_buffers() {
            [](auto &size) { size = 0; });
 }
 
-void Convertor::convert_picture(const string &file_name, size_t procNum) {
+void Convertor::convert_picture(const string &file_name, size_t procNum) noexcept {
 
   LibRaw &proc = *iProcessors[procNum];
   proc.unpack();
@@ -71,7 +72,7 @@ void Convertor::convert_picture(const string &file_name, size_t procNum) {
 }
 
 void Convertor::save_jpg(const libraw_processed_image_t *mem_image,
-                         size_t procNum, const string &name) {
+                         size_t procNum, const string &name) noexcept {
 
   unsigned long int *size = &compImageSizes[procNum];
   unsigned char *compressedImage = compImages[procNum];
@@ -91,12 +92,12 @@ void Convertor::save_jpg(const libraw_processed_image_t *mem_image,
 
   // Save compressed image to binary file
   auto f = std::fstream(name, std::ios::out | std::ios::binary);
-  f.write((char *)compressedImage, *size);
+  f.write(reinterpret_cast<char *>(compressedImage), static_cast<std::streamsize>(*size));
   f.close();
 }
 
 void Convertor::process_picture(const string &file_name, size_t procNum,
-                                shared_ptr<Pictures> pictures, bool convert) {
+                                shared_ptr<Pictures> pictures, bool convert) noexcept {
   // Get only name of file
   std::string name = file_name.substr(0, file_name.find_last_of('.'));
 
@@ -113,7 +114,7 @@ void Convertor::process_picture(const string &file_name, size_t procNum,
 
 void Convertor::process_list(size_t procNum, atomic<size_t> *index,
                              const vector<string> *pics,
-                             shared_ptr<Pictures> picList) {
+                             shared_ptr<Pictures> picList) noexcept {
   size_t i = (*index)++;
   string print;
   size_t size = pics->size();
@@ -131,6 +132,9 @@ string Convertor::get_info_string(size_t &last, size_t act, size_t max,
   string info = "\r";
   // TODO Enable bar with variable len
   size_t barLen = 20;
+  if (max == 0) {
+    throw std::invalid_argument("max must be positive number");
+  }
   size_t actLen = act * barLen / max;
 
   if (verbose) {
@@ -150,7 +154,7 @@ string Convertor::get_info_string(size_t &last, size_t act, size_t max,
 
 void Convertor::print_info(const atomic<size_t> *index,
                            const vector<string> *pics, size_t threadNum,
-                           bool verbose) {
+                           bool verbose) noexcept {
   size_t max = pics->size();
   size_t last = 0;
   size_t i = 0;
@@ -164,8 +168,8 @@ void Convertor::print_info(const atomic<size_t> *index,
   cout << " DONE" << endl;
 }
 
-Convertor::Convertor(const fs::path &src, const fs::path &dest, size_t threads)
-    : src(src), dest(dest), iProcessors(), tjCompressors() {
+Convertor::Convertor(const fs::path &src_, const fs::path &dest_, size_t threads) noexcept
+    : src(src_), dest(dest_), iProcessors(), tjCompressors() {
 
   // Create LibRaw and TurboJPEG instances
   for (size_t i = 0; i < threads; ++i) {
@@ -176,7 +180,7 @@ Convertor::Convertor(const fs::path &src, const fs::path &dest, size_t threads)
   }
 }
 
-Convertor::~Convertor() {
+Convertor::~Convertor() noexcept{
   // Destroy LibRaw and TurboJPEG instances
   for_each(par_unseq, iProcessors.begin(), iProcessors.end(),
            [](auto &proc) { delete proc; });
@@ -184,14 +188,14 @@ Convertor::~Convertor() {
            [](auto &comp) { tjDestroy(comp); });
 }
 
-void Convertor::set_quality(unsigned int quality) {
-  if (quality > 100 || quality == 0)
+void Convertor::set_quality(unsigned int quality_) {
+  if (quality_ > 100 || quality_ == 0)
     throw std::invalid_argument("Quality must be between 1 and 100 included.");
 
-  this->quality = quality;
+  quality = static_cast<int>(quality_);
 }
 
-shared_ptr<Pictures> Convertor::conver_photos_list(const vector<string> &pics) {
+shared_ptr<Pictures> Convertor::conver_photos_list(const vector<string> &pics) noexcept {
   // Create shared pointer for Pictures class
   auto pictures = make_shared<Pictures>();
 

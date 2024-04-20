@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -g -Wall -Werror -pedantic --std=c++2a -O3
+CXXFLAGS = -g -Wall -pedantic --std=c++2a
 CXXLINKFLAGS = -ltbb -lraw_r -lturbojpeg
 
 SRC = src
@@ -8,7 +8,12 @@ TEST = test
 TARGET = photo-worker
  
 .PHONY: build
+build: CXXFLAGS += -Werror
 build: $(BIN)/$(TARGET)
+
+.PHONY: release
+release: CXXFLAGS += -O3
+release: $(BIN)/$(TARGET) 
 
 .PHONY: run
 run: $(BIN)/$(TARGET)
@@ -22,6 +27,19 @@ debug: $(BIN)/$(TARGET)
 clean:
 	rm -rf $(BIN)
 	rm -rf $(TEST)/jpg
+
+.PHONY: tidy
+tidy:
+	clang-tidy -p . `find . -name '*.cpp'`
+
+.PHONY: clang-check
+clang-check:
+	clang -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded -fsyntax-only `find . -name '*.cpp'`
+
+.PHONY: bear
+bear:
+	make clean
+	bear -- make build -j
 
 # $^ all rules for dependency (after :)
 # $< first parametr of dependency (before :)

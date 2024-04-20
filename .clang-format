@@ -1,0 +1,7 @@
+BasedOnStyle: Google
+IndentWidth: 2
+UseTab: Never
+ColumnLimit: 83
+BinPackArguments: false
+BinPackParameters: false
+AlignAfterOpenBracket: AlwaysBreak

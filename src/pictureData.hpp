@@ -37,7 +37,7 @@ public:
   PictureData(const unsigned int width, const unsigned int height,
               const unsigned int out_width, const unsigned int out_height,
               const unsigned int top_margin, const unsigned int left_margin,
-              const unsigned int raw_width, const unsigned int raw_height);
+              const unsigned int raw_width, const unsigned int raw_height) noexcept;
 
   /**
    * @brief Get size of the image.
@@ -45,7 +45,7 @@ public:
    * @return std::pair<unsigned int, unsigned int> size of image as <width,
    * height>
    */
-  std::pair<unsigned int, unsigned int> get_image_size();
+  std::pair<unsigned int, unsigned int> get_image_size() noexcept;
 
   /**
    * @brief Get size of the output image.
@@ -53,7 +53,7 @@ public:
    * @return std::pair<unsigned int, unsigned int> size of output image as
    * <width, height>
    */
-  std::pair<unsigned int, unsigned int> get_output_image_size();
+  std::pair<unsigned int, unsigned int> get_output_image_size() noexcept;
 
   /**
    * @brief Get the margin size of the picture.
@@ -61,7 +61,7 @@ public:
    * @return std::pair<unsigned int, unsigned int> size of margin of the picture
    * as <top, left>
    */
-  std::pair<unsigned int, unsigned int> get_margin_size();
+  std::pair<unsigned int, unsigned int> get_margin_size() noexcept;
 
   /**
    * @brief Get the size of raw image.
@@ -69,12 +69,12 @@ public:
    * @return std::pair<unsigned int, unsigned int> size of the raw image ad
    * <width, height>
    */
-  std::pair<unsigned int, unsigned int> get_raw_image_size();
+  std::pair<unsigned int, unsigned int> get_raw_image_size() noexcept;
 
   /**
    * @brief Overload operator <<.
    */
-  friend std::ostream &operator<<(std::ostream &os, const PictureData &pic);
+  friend std::ostream &operator<<(std::ostream &os, const PictureData &pic) noexcept;
 };
 
 #endif // PICTURE_DATA_H_INCLUDED

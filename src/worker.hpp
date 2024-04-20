@@ -7,13 +7,10 @@
 #include <vector>
 
 class Worker {
-public:
-  enum WorkType { 
-    ORIGINAL,
-    CONVERTED,
-    BOTH };
+ public:
+  enum WorkType { ORIGINAL, CONVERTED, BOTH };
 
-private:
+ private:
   const std::filesystem::path src;
   const std::filesystem::path dest;
 
@@ -24,8 +21,8 @@ private:
    * @param name is new name
    * @return fs::path is path with new name
    */
-  static std::filesystem::path new_path(const std::filesystem::path &path,
-                                        const std::string &name) noexcept;
+  static std::filesystem::path new_path(
+      const std::filesystem::path &path, const std::string &name) noexcept;
 
   /**
    * @brief Get the sorted set of files included in directory.
@@ -35,9 +32,8 @@ private:
    * files will be sorted
    * @return std::set<fs::path> set of sorted files
    */
-  static std::set<std::filesystem::path>
-  get_sorted_files(const std::filesystem::path &path,
-                   const std::string *suffix) noexcept;
+  static std::set<std::filesystem::path> get_sorted_files(
+      const std::filesystem::path &path, const std::string *suffix) noexcept;
 
   /**
    * @brief Remove all files thats in synced folder and not in original folder.
@@ -45,10 +41,11 @@ private:
    * @param original folder that contains files for sync
    * @param synced folder with files thats will be removed
    */
-  static void remove_surplus_files(const std::filesystem::path &original,
-                                   const std::filesystem::path &synced) noexcept;
+  static void remove_surplus_files(
+      const std::filesystem::path &original,
+      const std::filesystem::path &synced) noexcept;
 
-public:
+ public:
   std::string raw_suffix = ".CR2";
   std::string converted_suffix = ".jpg";
   bool verbose = false;
@@ -60,7 +57,9 @@ public:
    * @param src_ is folder with raw pictures
    * @param dest_ is folder with converted pictures
    */
-  Worker(const std::filesystem::path &src_, const std::filesystem::path &dest_) noexcept;
+  Worker(
+      const std::filesystem::path &src_,
+      const std::filesystem::path &dest_) noexcept;
 
   /**
    * @brief Method for sync pictures in folders.
@@ -117,9 +116,10 @@ public:
    * @param suffix is suffix of added files
    * @param path is path to directory with files
    */
-  static void read_files(std::vector<std::string> &files,
-                         const std::string &suffix,
-                         const std::filesystem::path &path) noexcept;
+  static void read_files(
+      std::vector<std::string> &files,
+      const std::string &suffix,
+      const std::filesystem::path &path) noexcept;
 
   /**
    * @brief Method fo rename all files with specified suffix in specified
@@ -131,10 +131,11 @@ public:
    * @param renumber if it is true, renamed files will be numbered from 1, if
    * false, numbers of files satay same
    */
-  static void rename_files_in_folder(const std::filesystem::path &path,
-                                     const std::string &name,
-                                     const std::string &suffix,
-                                     bool renumber) noexcept;
+  static void rename_files_in_folder(
+      const std::filesystem::path &path,
+      const std::string &name,
+      const std::string &suffix,
+      bool renumber) noexcept;
 };
 
-#endif // WORKER_H_INCLUDED
+#endif  // WORKER_H_INCLUDED

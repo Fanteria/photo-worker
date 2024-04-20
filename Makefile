@@ -41,6 +41,17 @@ bear:
 	make clean
 	bear -- make build -j
 
+.PHONY: format
+format:
+	clang-format -i `find . -name '*.cpp' \
+		-o -name '*.c' \
+		-o -name '*.cc' \
+		-o -name '*.cxx' \
+		-o -name '*.hpp' \
+		-o -name '*.h' \
+		-o -name '*.hh' \
+		-o -name '*.hxx'`
+
 # $^ all rules for dependency (after :)
 # $< first parametr of dependency (before :)
 # $@ target of rule (before :)

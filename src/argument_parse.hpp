@@ -1,19 +1,20 @@
-#include <filesystem>
 #include <getopt.h>
+
+#include <filesystem>
 #include <string>
 
-/* 
+/*
  * Parse command line arguments.
  */
 class Arguments {
-public: 
+ public:
   enum RunType {
     SYNC_FILES,
     RENAME_FILES,
     CONVERT_FILES,
   };
 
-private:
+ private:
   /**
    * @brief Parse string to path and check if it exist, if not, and exist parent,
    * can be created depends on argument setup. If folder not exist (and
@@ -26,9 +27,10 @@ private:
    * @param must_exist if it is true, can create folder, if exist parent
    * @return std::filesystem::path created path
    */
-  std::filesystem::path parse_to_path(const std::string &path, bool must_exist = true);
+  std::filesystem::path parse_to_path(
+      const std::string& path, bool must_exist = true);
 
-public:
+ public:
   RunType command;
   std::filesystem::path source = ".";
   std::filesystem::path destination = ".";
@@ -46,7 +48,7 @@ public:
    *
    * @param argc is argument count
    * @param argv is argument vector
-   */ 
+   */
   Arguments(int argc, char** argv);
 
   /**
@@ -56,4 +58,3 @@ public:
    */
   static void help(std::ostream& os) noexcept;
 };
-

@@ -10,8 +10,7 @@ using std::string;
 fs::path Arguments::parse_to_path(const string &path, bool must_exist) {
   fs::path p(path);
   if (!fs::exists(p)) {
-    if (must_exist)
-      throw invalid_argument(path + " does not exist.");
+    if (must_exist) throw invalid_argument(path + " does not exist.");
     if (fs::exists(p.parent_path())) {
       // if parent exist create directory
       if (fs::create_directory(p)) {
@@ -63,8 +62,7 @@ Arguments::Arguments(int argc, char **argv) {
     switch (c) {
       case 's':
         source = parse_to_path(optarg);
-        if (!dest_setted)
-          destination = parse_to_path(source / "jpg", false);
+        if (!dest_setted) destination = parse_to_path(source / "jpg", false);
         break;
       case 'd':
         destination = parse_to_path(optarg, false);
@@ -96,8 +94,7 @@ Arguments::Arguments(int argc, char **argv) {
   }
 }
 
-void Arguments::help(std::ostream& os) noexcept {
+void Arguments::help(std::ostream &os) noexcept {
   os << "Help: TODO";
   os << '\n';
 }
-

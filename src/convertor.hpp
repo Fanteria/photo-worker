@@ -1,18 +1,19 @@
 #ifndef CONVERTOR_H_INCLUDED
 #define CONVERTOR_H_INCLUDED
 
+#include <libraw/libraw.h>
+#include <turbojpeg.h>
+
 #include <atomic>
 #include <filesystem>
-#include <libraw/libraw.h>
 #include <memory>
-#include <turbojpeg.h>
 #include <vector>
 
 #include "pictureData.hpp"
 #include "pictures.hpp"
 
 class Convertor {
-private:
+ private:
   int quality = 75;
   const std::filesystem::path src;
   const std::filesystem::path dest;
@@ -29,7 +30,8 @@ private:
    * @return int 0 if image was loaded, other numbers represents output of
    * LibRaw open_file
    */
-  static int load_picture(const std::string &file_name, LibRaw &iProcessor) noexcept;
+  static int load_picture(
+      const std::string &file_name, LibRaw &iProcessor) noexcept;
 
   /**
    * @brief Read data about loaded picture.
@@ -60,8 +62,10 @@ private:
    * @param procNum number of processor, convertor and buffer for this method
    * @param name is name of saved file
    */
-  void save_jpg(const libraw_processed_image_t *mem_image, size_t procNum,
-                const std::string &name) noexcept;
+  void save_jpg(
+      const libraw_processed_image_t *mem_image,
+      size_t procNum,
+      const std::string &name) noexcept;
 
   /**
    * @brief Process picture and convert picture if convert is true.
@@ -71,8 +75,11 @@ private:
    * @param pictures is shared pointer to class contains pictures
    * @param convert if it is true, picture will be converted
    */
-  void process_picture(const std::string &file_name, size_t procNum,
-                       std::shared_ptr<Pictures> pictures, bool convert = true) noexcept;
+  void process_picture(
+      const std::string &file_name,
+      size_t procNum,
+      std::shared_ptr<Pictures> pictures,
+      bool convert = true) noexcept;
 
   /**
    * @brief Function that use processor, compressor and buffers based on procNum
@@ -83,9 +90,11 @@ private:
    * @param pics collection of pictures names
    * @param picList collection of data about pictures
    */
-  void process_list(size_t procNum, std::atomic<size_t> *index,
-                    const std::vector<std::string> *pics,
-                    std::shared_ptr<Pictures> picList) noexcept;
+  void process_list(
+      size_t procNum,
+      std::atomic<size_t> *index,
+      const std::vector<std::string> *pics,
+      std::shared_ptr<Pictures> picList) noexcept;
 
   /**
    * @brief Get the string with informations to print.
@@ -99,9 +108,12 @@ private:
    * @param verbose true if output should print converted filenames
    * @return std::string informations about conversion
    */
-  static std::string get_info_string(size_t &last, size_t act, size_t max,
-                                     const std::vector<std::string> &pics,
-                                     bool verbose);
+  static std::string get_info_string(
+      size_t &last,
+      size_t act,
+      size_t max,
+      const std::vector<std::string> &pics,
+      bool verbose);
 
   /**
    * @brief Function to print informations about conversion.
@@ -111,11 +123,13 @@ private:
    * @param threadNum number of threads thats run
    * @param verbose true if output may contain filenames of converted files
    */
-  static void print_info(const std::atomic<size_t> *index,
-                         const std::vector<std::string> *pics, size_t threadNum,
-                         bool verbose) noexcept;
+  static void print_info(
+      const std::atomic<size_t> *index,
+      const std::vector<std::string> *pics,
+      size_t threadNum,
+      bool verbose) noexcept;
 
-public:
+ public:
   bool verbose = false;
   bool quiet = false;
 
@@ -127,8 +141,10 @@ public:
    * @param threads number of treads available for compressing images minimum is
    * 1, does not represents total number of threads
    */
-  Convertor(const std::filesystem::path &src_, const std::filesystem::path &dest_,
-            size_t threads = 1) noexcept;
+  Convertor(
+      const std::filesystem::path &src_,
+      const std::filesystem::path &dest_,
+      size_t threads = 1) noexcept;
 
   /**
    * @brief Destroy the Convertor object
@@ -153,7 +169,8 @@ public:
    * @return std::shared_ptr<Pictures> pointer to class with list of loaded
    * data from pictures
    */
-  std::shared_ptr<Pictures> conver_photos_list(const std::vector<std::string> &pics) noexcept;
+  std::shared_ptr<Pictures> conver_photos_list(
+      const std::vector<std::string> &pics) noexcept;
 };
 
-#endif // CONVERTOR_H_INCLUDED
+#endif  // CONVERTOR_H_INCLUDED

@@ -5,11 +5,12 @@
 using std::string;
 using std::vector;
 
-void Pictures::addPicture(const string &name, std::unique_ptr<PictureData> pic) noexcept {
+void Pictures::addPicture(
+    const string &name, std::unique_ptr<PictureData> pic) noexcept {
   pics.insert({name, std::move(pic)});
 }
 
-PictureData& Pictures::get_pic_data(const string &name) noexcept {
+PictureData &Pictures::get_pic_data(const string &name) noexcept {
   return *pics[name];
 }
 

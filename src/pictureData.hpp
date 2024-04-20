@@ -4,7 +4,7 @@
 #include <iostream>
 
 class PictureData {
-private:
+ private:
   // Image size without frame
   const unsigned int width;
   const unsigned int height;
@@ -21,7 +21,7 @@ private:
   const unsigned int raw_width;
   const unsigned int raw_height;
 
-public:
+ public:
   /**
    * @brief Construct a new Picture Data object.
    *
@@ -34,10 +34,15 @@ public:
    * @param raw_width raw image width
    * @param raw_height raw image height
    */
-  PictureData(const unsigned int width, const unsigned int height,
-              const unsigned int out_width, const unsigned int out_height,
-              const unsigned int top_margin, const unsigned int left_margin,
-              const unsigned int raw_width, const unsigned int raw_height) noexcept;
+  PictureData(
+      const unsigned int width,
+      const unsigned int height,
+      const unsigned int out_width,
+      const unsigned int out_height,
+      const unsigned int top_margin,
+      const unsigned int left_margin,
+      const unsigned int raw_width,
+      const unsigned int raw_height) noexcept;
 
   /**
    * @brief Get size of the image.
@@ -74,7 +79,8 @@ public:
   /**
    * @brief Overload operator <<.
    */
-  friend std::ostream &operator<<(std::ostream &os, const PictureData &pic) noexcept;
+  friend std::ostream &operator<<(
+      std::ostream &os, const PictureData &pic) noexcept;
 };
 
-#endif // PICTURE_DATA_H_INCLUDED
+#endif  // PICTURE_DATA_H_INCLUDED
